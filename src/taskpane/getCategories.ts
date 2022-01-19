@@ -5,7 +5,6 @@ const categoriesRange = categoriesRows.map((rowIndex) => `B${rowIndex + 1}`).joi
 export const getCategories = () =>
   Excel.run(async (context) => {
     const categoriesSheet = context.workbook.worksheets.getItem("Wzorzec kategorii");
-    console.log(categoriesRange);
 
     const categoriesNamesRange = categoriesSheet.getRanges(categoriesRange);
     categoriesNamesRange.load("areas");
