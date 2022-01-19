@@ -2,6 +2,8 @@ import * as React from "react";
 import { ComboBox, DefaultButton, IComboBoxOption, SelectableOptionMenuItemType, TextField } from "@fluentui/react";
 import { Controller, useForm } from "react-hook-form";
 import { addTransaction } from "./addTransaction";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const separator = "$%^";
 
@@ -9,18 +11,22 @@ type Props = {
   categories: { [key in string]: string[] };
 };
 
-type FormData = {
-  categoryDetails: string;
-  day: number;
-  price: number;
-};
+type FormData = yup.InferType<typeof schema>;
+
+const schema = yup
+  .object({
+    categoryDetails: yup.string().required(),
+    day: yup.number().typeError("Day must be a number").required().min(1).max(31),
+    price: yup.number().typeError("Price must be a number").required().min(0),
+  })
+  .required();
 
 export const AddTransactionForm = ({ categories }: Props) => {
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>({ resolver: yupResolver(schema) });
 
   const options = getOptions(categories);
   return (
@@ -36,7 +42,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
             autoComplete="on"
             allowFreeform={true}
             onChange={(_event, option) => {
-              field.onChange(option.data);
+              field.onChange(option?.data);
             }}
           />
         )}
