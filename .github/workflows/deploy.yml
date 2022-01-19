@@ -28,3 +28,4 @@ jobs:
       with:
         source-path: dist
         sas-url: ${{ secrets.DEPLOY_SAS_URL }}
+        require-index: false
