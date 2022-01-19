@@ -8,7 +8,7 @@ import Progress from "./Progress";
 
 export interface AppProps {
   title: string;
-  isOfficeInitialized: boolean;
+  categories?: { [key in string]: string[] };
 }
 
 export interface AppState {
@@ -65,9 +65,9 @@ export default class App extends React.Component<AppProps, AppState> {
   };
 
   render() {
-    const { title, isOfficeInitialized } = this.props;
+    const { title, categories } = this.props;
 
-    if (!isOfficeInitialized) {
+    if (!categories) {
       return (
         <Progress
           title={title}
@@ -78,17 +78,20 @@ export default class App extends React.Component<AppProps, AppState> {
     }
 
     return (
-      <div className="ms-welcome">
-        <Header logo={require("./../../../assets/logo-filled.png")} title={this.props.title} message="Welcome" />
-        <HeroList message="Discover what Office Add-ins can do for you today!" items={this.state.listItems}>
-          <p className="ms-font-l">
-            Modify the source files, then click <b>Run</b>.
-          </p>
-          <DefaultButton className="ms-welcome__action" iconProps={{ iconName: "ChevronRight" }} onClick={this.click}>
-            Run
-          </DefaultButton>
-        </HeroList>
-      </div>
+      <>
+        <div className="ms-welcome">
+          <Header logo={require("./../../../assets/logo-filled.png")} title={this.props.title} message="Welcome" />
+          <HeroList message="Discover what Office Add-ins can do for you today!" items={this.state.listItems}>
+            <p className="ms-font-l">
+              Modify the source files, then click <b>Run</b>.
+            </p>
+            <DefaultButton className="ms-welcome__action" iconProps={{ iconName: "ChevronRight" }} onClick={this.click}>
+              Run
+            </DefaultButton>
+          </HeroList>
+        </div>
+        <div>{categories && Object.values(categories).map((subCat) => subCat.map((cat) => <li>{cat}</li>))}</div>
+      </>
     );
   }
 }

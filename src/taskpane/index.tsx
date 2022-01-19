@@ -4,20 +4,19 @@ import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { ThemeProvider } from "@fluentui/react";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { getCategories } from "./getCategories";
 
 /* global document, Office, module, require */
 
 initializeIcons();
 
-let isOfficeInitialized = false;
+const title = "WNOP autocomplete";
 
-const title = "Contoso Task Pane Add-in";
-
-const render = (Component) => {
+const render = (categories: { [key in string]: string[] } | undefined) => {
   ReactDOM.render(
     <AppContainer>
       <ThemeProvider>
-        <Component title={title} isOfficeInitialized={isOfficeInitialized} />
+        <App title={title} categories={categories} />
       </ThemeProvider>
     </AppContainer>,
     document.getElementById("container")
@@ -26,9 +25,20 @@ const render = (Component) => {
 
 /* Render application after Office initializes */
 Office.initialize = () => {
-  isOfficeInitialized = true;
-  render(App);
+  getCategories().then((value) => {
+    render(value);
+  });
+  render(undefined);
 };
+
+Office.onReady((info) => {
+  // If needed, Office.js is ready to be called
+  if (info.host === Office.HostType.Excel) {
+    if (!Office.context.requirements.isSetSupported("ExcelApi", "1.7")) {
+      console.log("Sorry. The tutorial add-in uses Excel.js APIs that are not available in your version of Office.");
+    }
+  }
+});
 
 if ((module as any).hot) {
   (module as any).hot.accept("./components/App", () => {
