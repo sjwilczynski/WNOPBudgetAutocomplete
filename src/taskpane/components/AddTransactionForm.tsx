@@ -1,6 +1,7 @@
 import * as React from "react";
-import { ComboBox, IComboBox, IComboBoxOption, SelectableOptionMenuItemType } from "@fluentui/react";
+import { ComboBox, IComboBoxOption, SelectableOptionMenuItemType } from "@fluentui/react";
 import { Controller, useForm } from "react-hook-form";
+import { addTransaction } from "./addTransaction";
 
 const separator = "$%^";
 
@@ -9,7 +10,7 @@ type Props = {
 };
 
 type FormData = {
-  category: string;
+  categoryDetails: string;
   day: number;
   price: number;
 };
@@ -22,14 +23,12 @@ export const AddTransactionForm = ({ categories }: Props) => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const { category, onCategoryChange } = useOnCategoryChange();
-
   if (categories) {
     const options = getOptions(categories);
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
-          name="category"
+          name="categoryDetails"
           control={control}
           render={({ field }) => (
             <ComboBox
@@ -39,12 +38,12 @@ export const AddTransactionForm = ({ categories }: Props) => {
               autoComplete="on"
               allowFreeform={true}
               onChange={(_event, option) => {
-                field.onChange(option.data)
+                field.onChange(option.data);
               }}
             />
           )}
         />
-        <p>{errors.category?.message}</p>
+        <p>{errors.categoryDetails?.message}</p>
         <input type="number" {...register("day", { required: true, min: 1, max: 31, valueAsNumber: true })} />
         <p>{errors.day?.message}</p>
         <input type="number" {...register("price", { required: true, min: 0, valueAsNumber: true })} />
@@ -57,25 +56,12 @@ export const AddTransactionForm = ({ categories }: Props) => {
   }
 };
 
-const useOnCategoryChange = () => {
-  const [category, setCategory] = React.useState<string>("");
-  const onCategoryChange = (
-    _event: React.FormEvent<IComboBox>,
-    option?: IComboBoxOption,
-    _index?: number,
-    _value?: string
-  ) => {
-    if (option) {
-      console.log(option);
-      setCategory(option.data);
-    }
-  };
-
-  return { category, onCategoryChange };
-};
-
-function onSubmit(data: FormData): void {
-  console.log(data);
+function onSubmit({ categoryDetails, day, price }: FormData): void {
+  const separatorStart = categoryDetails.indexOf(separator);
+  const separatorEnd = categoryDetails.indexOf(separator) + separator.length;
+  const category = categoryDetails.substring(0, separatorStart);
+  const subcategory = categoryDetails.substring(separatorEnd);
+  addTransaction(category, subcategory, day, price);
 }
 
 function getOptions(categories: { [x: string]: string[] }): IComboBoxOption[] {
