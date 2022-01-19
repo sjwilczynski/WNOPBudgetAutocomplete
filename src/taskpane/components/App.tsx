@@ -1,4 +1,5 @@
 import * as React from "react";
+import { AddTransactionForm } from "./AddTransactionForm";
 import Header from "./Header";
 import Progress from "./Progress";
 
@@ -27,7 +28,7 @@ export default function App(props: AppProps) {
       <div className="ms-welcome">
         <Header logo={require("./../../../assets/logo-filled.png")} title={title} message="Welcome" />
       </div>
-      <div>{categories && Object.values(categories).map((subCat) => subCat.map((cat) => <li>{cat}</li>))}</div>
+      <AddTransactionForm categories={categories}></AddTransactionForm>
     </>
   );
 }
