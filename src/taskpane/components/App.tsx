@@ -3,14 +3,12 @@ import { AddTransactionForm } from "./AddTransactionForm";
 import Header from "./Header";
 import Progress from "./Progress";
 
-/* global console, Excel, require  */
-
-export interface AppProps {
+type Props = {
   title: string;
   categories?: { [key in string]: string[] };
-}
+};
 
-export default function App(props: AppProps) {
+export default function App(props: Props) {
   const { title, categories } = props;
 
   if (!categories) {
