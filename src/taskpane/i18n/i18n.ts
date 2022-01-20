@@ -5,13 +5,14 @@ export const initI18n = (locale: string) =>
   i18n.use(initReactI18next).init({
     resources,
     lng: locale,
-    supportedLngs: ["en-US", "pl"],
+    supportedLngs: ["en-US", "pl-PL"],
     fallbackLng: "en-US",
   });
 
 const resources: Resource = {
   "en-US": {
     translation: {
+      "add-transaction": "Add transaction",
       "app-title": "WNOP autocomplete",
       "choose-category": "Category",
       day: "Day",
@@ -22,8 +23,9 @@ const resources: Resource = {
       welcome: "Welcome!",
     },
   },
-  pl: {
+  "pl-PL": {
     translation: {
+      "add-transaction": "Dodaj transakcję",
       "app-title": "WNOP autouzupełnianie",
       "choose-category": "Kategoria",
       day: "Dzień",

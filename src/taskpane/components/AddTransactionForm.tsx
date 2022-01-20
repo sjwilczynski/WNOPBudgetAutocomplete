@@ -89,8 +89,7 @@ function useYupSchema() {
     t,
     i18n: { language },
   } = useTranslation();
-  console.log(language);
-  if (language === "pl") {
+  if (language === "pl-PL") {
     yup.setLocale(yupLocalePL);
   } else {
     yup.setLocale({});
