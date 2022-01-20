@@ -4,6 +4,7 @@ const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 const urlDev = "https://localhost:3000/";
 const urlProd = "https://sjwilstorage.z16.web.core.windows.net/";
@@ -21,7 +22,7 @@ module.exports = async (env, options) => {
     entry: {
       polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
       vendor: ["react", "react-dom", "core-js", "@fluentui/react"],
-      taskpane: ["react-hot-loader/patch", "./src/taskpane/index.tsx"],
+      taskpane: "./src/taskpane/index.tsx",
       commands: "./src/commands/commands.ts",
     },
     output: {
@@ -34,19 +35,16 @@ module.exports = async (env, options) => {
     module: {
       rules: [
         {
-          test: /\.ts$/,
+          test: /\.(ts|js)x?$/,
           exclude: /node_modules/,
-          use: {
-            loader: "babel-loader",
-            options: {
-              presets: ["@babel/preset-typescript"],
+          use: [
+            {
+              loader: require.resolve("babel-loader"),
+              options: {
+                plugins: [dev && require.resolve("react-refresh/babel")].filter(Boolean),
+              },
             },
-          },
-        },
-        {
-          test: /\.tsx?$/,
-          use: ["react-hot-loader/webpack", "ts-loader"],
-          exclude: /node_modules/,
+          ],
         },
         {
           test: /\.html$/,
@@ -95,7 +93,7 @@ module.exports = async (env, options) => {
       new webpack.ProvidePlugin({
         Promise: ["es6-promise", "Promise"],
       }),
-    ],
+    ].concat(dev ? [new ReactRefreshWebpackPlugin()] : []),
     devServer: {
       hot: true,
       headers: {

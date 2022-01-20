@@ -1,5 +1,4 @@
 import App from "./components/App";
-import { AppContainer } from "react-hot-loader";
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { ThemeProvider } from "@fluentui/react";
 import * as React from "react";
@@ -8,7 +7,7 @@ import { getCategories } from "./getCategories";
 import { initI18n } from "./i18n/i18n";
 import { ErrorMessage } from "./components/ErrorMessage";
 
-/* global document, Office, module, require, console */
+/* global document, Office, console */
 
 initializeIcons();
 
@@ -17,12 +16,7 @@ const renderApp = (categories: { [key in string]: string[] } | undefined) => {
 };
 
 const render = (component: React.ReactNode) => {
-  ReactDOM.render(
-    <AppContainer>
-      <ThemeProvider>{component}</ThemeProvider>
-    </AppContainer>,
-    document.getElementById("container")
-  );
+  ReactDOM.render(<ThemeProvider>{component}</ThemeProvider>, document.getElementById("container"));
 };
 
 Office.onReady((info) => {
@@ -42,10 +36,3 @@ Office.onReady((info) => {
     render(<ErrorMessage message="The add-in can be used in Excel only" />);
   }
 });
-
-if ((module as any).hot) {
-  (module as any).hot.accept("./components/App", () => {
-    const NextApp = require("./components/App").default;
-    render(NextApp);
-  });
-}
