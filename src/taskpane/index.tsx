@@ -38,6 +38,8 @@ Office.onReady((info) => {
       });
       renderApp(undefined);
     });
+  } else {
+    render(<ErrorMessage message="The add-in can be used in Excel only" />);
   }
 });
 
