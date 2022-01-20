@@ -5,38 +5,39 @@ import { ThemeProvider } from "@fluentui/react";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { getCategories } from "./getCategories";
+import { initI18n } from "./i18n/i18n";
+import { ErrorMessage } from "./components/ErrorMessage";
 
-/* global document, Office, module, require */
+/* global document, Office, module, require, console */
 
 initializeIcons();
 
-const title = "WNOP autocomplete";
+const renderApp = (categories: { [key in string]: string[] } | undefined) => {
+  render(<App categories={categories} />);
+};
 
-const render = (categories: { [key in string]: string[] } | undefined) => {
+const render = (component: React.ReactNode) => {
   ReactDOM.render(
     <AppContainer>
-      <ThemeProvider>
-        <App title={title} categories={categories} />
-      </ThemeProvider>
+      <ThemeProvider>{component}</ThemeProvider>
     </AppContainer>,
     document.getElementById("container")
   );
-};
-
-/* Render application after Office initializes */
-Office.initialize = () => {
-  getCategories().then((value) => {
-    render(value);
-  });
-  render(undefined);
 };
 
 Office.onReady((info) => {
   // If needed, Office.js is ready to be called
   if (info.host === Office.HostType.Excel) {
     if (!Office.context.requirements.isSetSupported("ExcelApi", "1.7")) {
-      console.log("Sorry. The tutorial add-in uses Excel.js APIs that are not available in your version of Office.");
+      render(<ErrorMessage message="Sorry, the required Excel JS API is not available in your version of Excel" />);
     }
+    initI18n(Office.context.displayLanguage).then(() => {
+      console.log(Office.context.displayLanguage);
+      getCategories().then((value) => {
+        renderApp(value);
+      });
+      renderApp(undefined);
+    });
   }
 });
 

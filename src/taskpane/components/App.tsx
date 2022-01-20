@@ -1,23 +1,24 @@
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { AddTransactionForm } from "./AddTransactionForm";
 import { Header } from "./Header";
 import { Progress } from "./Progress";
 
 type Props = {
-  title: string;
   categories?: { [key in string]: string[] };
 };
 
 export default function App(props: Props) {
-  const { title, categories } = props;
+  const { categories } = props;
+  const { t } = useTranslation();
 
   if (!categories) {
-    return <Progress title={title} message="Trwa ładowanie..." />;
+    return <Progress title={t("app-title")} message={t("loading")} />;
   }
 
   return (
     <>
-      <Header message="Witamy!" />
+      <Header message={t("welcome")} />
       <AddTransactionForm categories={categories}></AddTransactionForm>
     </>
   );

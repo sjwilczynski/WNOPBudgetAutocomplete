@@ -4,6 +4,8 @@ import { Controller, useForm } from "react-hook-form";
 import { addTransaction } from "./addTransaction";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useTranslation } from "react-i18next";
+import yupLocalePL from "yup-locale-pl";
 
 const separator = "$%^";
 
@@ -11,22 +13,16 @@ type Props = {
   categories: { [key in string]: string[] };
 };
 
-type FormData = yup.InferType<typeof schema>;
-
-const schema = yup
-  .object({
-    categoryDetails: yup.string().required(),
-    day: yup.number().typeError("Day must be a number").required().min(1).max(31),
-    price: yup.number().typeError("Price must be a number").required().min(0),
-  })
-  .required();
+type FormData = yup.InferType<ReturnType<typeof useYupSchema>>;
 
 export const AddTransactionForm = ({ categories }: Props) => {
+  const schema = useYupSchema();
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm<FormData>({ resolver: yupResolver(schema) });
+  const { t } = useTranslation();
 
   const options = getOptions(categories);
   return (
@@ -38,7 +34,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
           <ComboBox
             {...field}
             options={options}
-            label="Wybierz kategorię"
+            label={t("choose-category")}
             autoComplete="on"
             allowFreeform={true}
             onChange={(_event, option) => {
@@ -51,16 +47,18 @@ export const AddTransactionForm = ({ categories }: Props) => {
       <Controller
         name="day"
         control={control}
-        render={({ field }) => <TextField label="Dzień" type="number" {...field} value={field.value?.toString()} />}
+        render={({ field }) => <TextField label={t("day")} type="number" {...field} value={field.value?.toString()} />}
       />
       <p>{errors.day?.message}</p>
       <Controller
         name="price"
         control={control}
-        render={({ field }) => <TextField label="Cena" type="number" {...field} value={field.value?.toString()} />}
+        render={({ field }) => (
+          <TextField label={t("price")} type="number" {...field} value={field.value?.toString()} />
+        )}
       />
       <p>{errors.price?.message}</p>
-      <DefaultButton type="submit">Dodaj transakcję</DefaultButton>
+      <DefaultButton type="submit">{t("add-transaction")}</DefaultButton>
     </form>
   );
 };
@@ -84,4 +82,25 @@ function getOptions(categories: { [x: string]: string[] }): IComboBoxOption[] {
     }
   });
   return options;
+}
+
+function useYupSchema() {
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation();
+  console.log(language);
+  if (language === "pl") {
+    yup.setLocale(yupLocalePL);
+  } else {
+    yup.setLocale({});
+  }
+
+  return yup
+    .object({
+      categoryDetails: yup.string().required(),
+      day: yup.number().typeError(t("day-type-error")).required().min(1).max(31),
+      price: yup.number().typeError(t("price-type-error")).required().min(0),
+    })
+    .required();
 }

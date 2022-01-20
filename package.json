@@ -30,11 +30,14 @@
     "@hookform/resolvers": "^2.8.8",
     "core-js": "^3.9.1",
     "es6-promise": "^4.2.8",
+    "i18next": "^21.6.6",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-hook-form": "^7.20.0",
+    "react-i18next": "^11.15.3",
     "regenerator-runtime": "^0.13.7",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "yup-locale-pl": "^0.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
