@@ -2,6 +2,7 @@ import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { AddTransactionForm } from "./AddTransactionForm";
 import { Header } from "./Header";
+import { MonthLabel } from "./MonthLabel";
 import { Progress } from "./Progress";
 
 type Props = {
@@ -19,6 +20,7 @@ export default function App(props: Props) {
   return (
     <>
       <Header message={t("welcome")} />
+      <MonthLabel />
       <AddTransactionForm categories={categories}></AddTransactionForm>
     </>
   );
