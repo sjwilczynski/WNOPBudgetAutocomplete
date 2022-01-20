@@ -5,7 +5,7 @@ import { Header } from "./Header";
 import { Progress } from "./Progress";
 
 type Props = {
-  categories?: { [key in string]: string[] };
+  categories?: Record<string, string[]>;
 };
 
 export default function App(props: Props) {

@@ -10,7 +10,7 @@ import yupLocalePL from "yup-locale-pl";
 const separator = "$%^";
 
 type Props = {
-  categories: { [key in string]: string[] };
+  categories: Record<string, string[]>;
 };
 
 type FormData = yup.InferType<ReturnType<typeof useYupSchema>>;
@@ -71,7 +71,7 @@ function onSubmit({ categoryDetails, day, price }: FormData): void {
   addTransaction(category, subcategory, day, price);
 }
 
-function getOptions(categories: { [x: string]: string[] }): IComboBoxOption[] {
+function getOptions(categories: Record<string, string[]>): IComboBoxOption[] {
   const options: IComboBoxOption[] = [];
   Object.entries(categories).forEach((value) => {
     const [category, subCategories] = value;

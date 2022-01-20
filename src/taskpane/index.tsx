@@ -11,7 +11,7 @@ import { ErrorMessage } from "./components/ErrorMessage";
 
 initializeIcons();
 
-const renderApp = (categories: { [key in string]: string[] } | undefined) => {
+const renderApp = (categories: Record<string, string[]> | undefined) => {
   render(<App categories={categories} />);
 };
 

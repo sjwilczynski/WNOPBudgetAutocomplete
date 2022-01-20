@@ -1,7 +1,9 @@
+/* global Excel */
+
 const searchSettings = {
   completeMatch: true,
   matchCase: true,
-  searchDirection: "Forward" as const,
+  searchDirection: Excel.SearchDirection.forward,
 };
 
 export const addTransaction = (category: string, subcategory: string, day: number, price: number) => {
