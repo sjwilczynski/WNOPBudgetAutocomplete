@@ -13,7 +13,6 @@ const resources: Resource = {
   "en-US": {
     translation: {
       "add-transaction": "Add transaction",
-      "app-title": "WNOP autocomplete",
       "choose-category": "Category",
       "current-month": "Current month",
       day: "Day",
@@ -29,7 +28,6 @@ const resources: Resource = {
   "pl-PL": {
     translation: {
       "add-transaction": "Dodaj transakcję",
-      "app-title": "WNOP autouzupełnianie",
       "choose-category": "Kategoria",
       "current-month": "Uzupełniany miesiąc",
       day: "Dzień",
