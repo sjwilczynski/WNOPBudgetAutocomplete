@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
 import yupLocalePL from "yup-locale-pl";
+import { ErrorMessage } from "./ErrorMessage";
 
 const separator = "$%^";
 
@@ -43,13 +44,13 @@ export const AddTransactionForm = ({ categories }: Props) => {
           />
         )}
       />
-      <p>{errors.categoryDetails?.message}</p>
+      <ErrorMessage message={errors.categoryDetails?.message} />
       <Controller
         name="day"
         control={control}
         render={({ field }) => <TextField label={t("day")} type="number" {...field} value={field.value?.toString()} />}
       />
-      <p>{errors.day?.message}</p>
+      <ErrorMessage message={errors.day?.message} />
       <Controller
         name="price"
         control={control}
@@ -57,7 +58,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
           <TextField label={t("price")} type="number" {...field} value={field.value?.toString()} />
         )}
       />
-      <p>{errors.price?.message}</p>
+      <ErrorMessage message={errors.price?.message} />
       <DefaultButton type="submit">{t("add-transaction")}</DefaultButton>
     </form>
   );
