@@ -6,6 +6,7 @@ import * as ReactDOM from "react-dom";
 import { getCategories } from "./getCategories";
 import { initI18n } from "./i18n/i18n";
 import { ErrorMessage } from "./components/ErrorMessage";
+import { IssuesLink } from "./components/IssuesLink/IssuesLink";
 
 /* global document, Office */
 
@@ -24,9 +25,17 @@ Office.onReady(async (info) => {
   const t = await initI18n(Office.context.displayLanguage);
   if (info.host === Office.HostType.Excel) {
     if (Office.context.requirements.isSetSupported("ExcelApi", "1.7")) {
-      renderApp(undefined);
-      const categories = await getCategories();
-      renderApp(categories);
+      try {
+        renderApp(undefined);
+        const categories = await getCategories();
+        renderApp(categories);
+      } catch {
+        render(
+          <ErrorMessage message={t("error-get-categories")}>
+            <IssuesLink />
+          </ErrorMessage>
+        );
+      }
     } else {
       render(<ErrorMessage message={t("error-old-api")} />);
     }
