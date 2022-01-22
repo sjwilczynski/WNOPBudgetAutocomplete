@@ -1,11 +1,7 @@
 {
-    "eslint.validate": [
-      "javascript",
-      "javascriptreact",
-      "typescript"
-    ],
-    "yaml.schemas": {
-      "https://json.schemastore.org/github-workflow.json": "file:///home/stachu/dyskD/ubuntu/programy/github/WNOPBudgetInput2/.github/workflows/deploy.yml"
-    }
-  }
-  
+  "eslint.validate": ["javascript", "javascriptreact", "typescript"],
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": "file:///home/stachu/dyskD/ubuntu/programy/github/WNOPBudgetInput2/.github/workflows/deploy.yml"
+  },
+  "typescript.tsdk": "node_modules\\typescript\\lib"
+}
