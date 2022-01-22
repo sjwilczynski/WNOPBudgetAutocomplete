@@ -19,7 +19,7 @@ export default function App({ categories }: Props) {
       {categories ? (
         <>
           <MonthLabel />
-          <AddTransactionForm categories={categories}></AddTransactionForm>
+          <AddTransactionForm categories={categories} />
         </>
       ) : (
         <Progress message={t("loading")} />
