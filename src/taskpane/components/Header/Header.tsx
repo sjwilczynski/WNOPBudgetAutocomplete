@@ -1,3 +1,5 @@
+/* global require*/
+
 import * as React from "react";
 import "./Header.css";
 
@@ -6,5 +8,10 @@ type Props = {
 };
 
 export function Header({ message }: Props) {
-  return <h1 className="header">{message}</h1>;
+  return (
+    <div className="container">
+      <img width="90" height="90" src={require("../../../../assets/logo-80.png")} alt={message} />
+      <h1 className="header">{message}</h1>
+    </div>
+  );
 }
