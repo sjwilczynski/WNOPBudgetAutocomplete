@@ -19,19 +19,18 @@ const render = (component: React.ReactNode) => {
   ReactDOM.render(<ThemeProvider>{component}</ThemeProvider>, document.getElementById("container"));
 };
 
-Office.onReady((info) => {
+Office.onReady(async (info) => {
   // If needed, Office.js is ready to be called
+  const t = await initI18n(Office.context.displayLanguage);
   if (info.host === Office.HostType.Excel) {
-    if (!Office.context.requirements.isSetSupported("ExcelApi", "1.7")) {
-      render(<ErrorMessage message="Sorry, the required Excel JS API is not available in your version of Excel" />);
-    }
-    initI18n(Office.context.displayLanguage).then(() => {
-      getCategories().then((value) => {
-        renderApp(value);
-      });
+    if (Office.context.requirements.isSetSupported("ExcelApi", "1.7")) {
       renderApp(undefined);
-    });
+      const categories = await getCategories();
+      renderApp(categories);
+    } else {
+      render(<ErrorMessage message={t("error-old-api")} />);
+    }
   } else {
-    render(<ErrorMessage message="The add-in can be used in Excel only" />);
+    render(<ErrorMessage message={t("error-excel-only")} />);
   }
 });
