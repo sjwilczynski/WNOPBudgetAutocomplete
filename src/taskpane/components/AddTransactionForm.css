@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.form input::placeholder {
+  opacity: 0.5;
+}
+
 .submit {
-    margin-top: 24px;
+  margin-top: 24px;
 }

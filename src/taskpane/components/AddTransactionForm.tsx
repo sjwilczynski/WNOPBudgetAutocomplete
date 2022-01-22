@@ -6,7 +6,6 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
 import yupLocalePL from "yup-locale-pl";
-import { ErrorMessage } from "./ErrorMessage";
 import "./AddTransactionForm.css";
 
 const separator = "$%^";
@@ -42,24 +41,41 @@ export const AddTransactionForm = ({ categories }: Props) => {
             onChange={(_event, option) => {
               field.onChange(option?.data);
             }}
+            required={true}
+            errorMessage={errors.categoryDetails?.message}
           />
         )}
       />
-      <ErrorMessage message={errors.categoryDetails?.message} />
       <Controller
         name="day"
         control={control}
-        render={({ field }) => <TextField label={t("day")} type="number" {...field} value={field.value?.toString()} />}
+        render={({ field }) => (
+          <TextField
+            label={t("day")}
+            placeholder={t("day-placeholder")}
+            type="number"
+            {...field}
+            value={field.value?.toString()}
+            required={true}
+            errorMessage={errors.day?.message}
+          />
+        )}
       />
-      <ErrorMessage message={errors.day?.message} />
       <Controller
         name="price"
         control={control}
         render={({ field }) => (
-          <TextField label={t("price")} type="number" {...field} value={field.value?.toString()} />
+          <TextField
+            label={t("price")}
+            placeholder={t("price-placeholder")}
+            type="number"
+            {...field}
+            value={field.value?.toString()}
+            required={true}
+            errorMessage={errors.price?.message}
+          />
         )}
       />
-      <ErrorMessage message={errors.price?.message} />
       <PrimaryButton className="submit" type="submit" disabled={!isDirty || !isValid}>
         {t("add-transaction")}
       </PrimaryButton>
