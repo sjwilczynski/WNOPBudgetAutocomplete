@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ComboBox, DefaultButton, IComboBoxOption, SelectableOptionMenuItemType, TextField } from "@fluentui/react";
+import { ComboBox, IComboBoxOption, PrimaryButton, SelectableOptionMenuItemType, TextField } from "@fluentui/react";
 import { Controller, useForm } from "react-hook-form";
 import { addTransaction } from "./addTransaction";
 import * as yup from "yup";
@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
 import yupLocalePL from "yup-locale-pl";
 import { ErrorMessage } from "./ErrorMessage";
+import "./AddTransactionForm.css";
 
 const separator = "$%^";
 
@@ -27,7 +28,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
 
   const options = getOptions(categories);
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="form">
       <Controller
         name="categoryDetails"
         control={control}
@@ -59,7 +60,9 @@ export const AddTransactionForm = ({ categories }: Props) => {
         )}
       />
       <ErrorMessage message={errors.price?.message} />
-      <DefaultButton type="submit">{t("add-transaction")}</DefaultButton>
+      <PrimaryButton className="submit" type="submit">
+        {t("add-transaction")}
+      </PrimaryButton>
     </form>
   );
 };

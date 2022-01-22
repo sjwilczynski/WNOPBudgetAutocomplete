@@ -1,9 +1,10 @@
 import * as React from "react";
+import "./Header.css";
 
 type Props = {
   message: string;
 };
 
 export function Header({ message }: Props) {
-  return <h1 className="ms-fontSize-su ms-fontWeight-light ms-fontColor-neutralPrimary">{message}</h1>;
+  return <h1 className="header">{message}</h1>;
 }
