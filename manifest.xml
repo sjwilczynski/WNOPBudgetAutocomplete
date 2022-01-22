@@ -7,11 +7,11 @@
   <Version>1.0.0.0</Version>
   <ProviderName>Stanislaw Wilczynski</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="WNOP Autocomplete">
-    <Override Locale="pl-PL" Value="WNOP autouzupełniacz" />
+  <DisplayName DefaultValue="Fill-in form">
+    <Override Locale="pl-PL" Value="Formularz uzupełniania" />
   </DisplayName>
   <Description DefaultValue="An add-in that helps users with efficiently filling in their budget sheet">
-    <Override Locale="pl-PL" Value="Add-in pomagający użytkownikowi efektywnie uzupełniać swój arkusz z budżetem" />
+    <Override Locale="pl-PL" Value="Dodatek pomagający użytkownikowi efektywnie uzupełniać swój arkusz z budżetem domowym" />
   </Description>
   <IconUrl DefaultValue="https://localhost:3000/assets/logo-32.png"/>
   <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/logo-64.png"/>
@@ -71,16 +71,16 @@
         <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="CommandsGroup.Label" DefaultValue="WNOP autocomplete">
-          <bt:Override Locale="pl-PL" Value="WNOP autouzupełniacz" />
+        <bt:String id="CommandsGroup.Label" DefaultValue="Fill-in form">
+          <bt:Override Locale="pl-PL" Value="Formularz uzupełniania" />
         </bt:String>
-        <bt:String id="TaskpaneButton.Label" DefaultValue="Open WNOP autocomplete">
-          <bt:Override Locale="pl-PL" Value="Otwórz autouzupełniacz" />
+        <bt:String id="TaskpaneButton.Label" DefaultValue="Add transaction">
+          <bt:Override Locale="pl-PL" Value="Dodaj transakcję" />
         </bt:String>
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to Open WNOP autocomplete">
-          <bt:Override Locale="pl-PL" Value="Kliknij, żeby otworzyć WNOP autouzupełniacz" />
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to add a new transaction">
+          <bt:Override Locale="pl-PL" Value="Kliknij, żeby dodać nową transakcję" />
         </bt:String>
       </bt:LongStrings>
     </Resources>
