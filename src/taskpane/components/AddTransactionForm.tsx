@@ -22,8 +22,8 @@ export const AddTransactionForm = ({ categories }: Props) => {
   const {
     handleSubmit,
     control,
-    formState: { errors },
-  } = useForm<FormData>({ resolver: yupResolver(schema) });
+    formState: { errors, isDirty, isValid },
+  } = useForm<FormData>({ resolver: yupResolver(schema), mode: "onChange" });
   const { t } = useTranslation();
 
   const options = getOptions(categories);
@@ -60,7 +60,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
         )}
       />
       <ErrorMessage message={errors.price?.message} />
-      <PrimaryButton className="submit" type="submit">
+      <PrimaryButton className="submit" type="submit" disabled={!isDirty || !isValid}>
         {t("add-transaction")}
       </PrimaryButton>
     </form>
