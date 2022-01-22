@@ -46,6 +46,10 @@ module.exports = async (env, options) => {
           ],
         },
         {
+          test: /\.css$/i,
+          use: ["style-loader", "css-loader"],
+        },
+        {
           test: /\.html$/,
           exclude: /node_modules/,
           use: "html-loader",

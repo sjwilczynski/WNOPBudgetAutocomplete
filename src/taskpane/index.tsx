@@ -7,7 +7,7 @@ import { getCategories } from "./getCategories";
 import { initI18n } from "./i18n/i18n";
 import { ErrorMessage } from "./components/ErrorMessage";
 
-/* global document, Office, console */
+/* global document, Office */
 
 initializeIcons();
 
@@ -26,7 +26,6 @@ Office.onReady((info) => {
       render(<ErrorMessage message="Sorry, the required Excel JS API is not available in your version of Excel" />);
     }
     initI18n(Office.context.displayLanguage).then(() => {
-      console.log(Office.context.displayLanguage);
       getCategories().then((value) => {
         renderApp(value);
       });

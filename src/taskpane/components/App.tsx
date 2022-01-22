@@ -4,13 +4,13 @@ import { AddTransactionForm } from "./AddTransactionForm";
 import { Header } from "./Header";
 import { MonthLabel } from "./MonthLabel";
 import { Progress } from "./Progress";
+import "./App.css";
 
 type Props = {
   categories?: Record<string, string[]>;
 };
 
-export default function App(props: Props) {
-  const { categories } = props;
+export default function App({ categories }: Props) {
   const { t } = useTranslation();
 
   if (!categories) {
@@ -18,10 +18,10 @@ export default function App(props: Props) {
   }
 
   return (
-    <>
+    <main className="app">
       <Header message={t("welcome")} />
       <MonthLabel />
       <AddTransactionForm categories={categories}></AddTransactionForm>
-    </>
+    </main>
   );
 }
