@@ -9,20 +9,20 @@ export const getCategories = () =>
     const categoriesSheet = context.workbook.worksheets.getItem("Wzorzec kategorii");
 
     const categoriesNamesRange = categoriesSheet.getRanges(categoriesRange);
-    categoriesNamesRange.load("areas");
-    await context.sync();
-    categoriesNamesRange.areas.items.forEach((area) => area.load("text"));
+    categoriesNamesRange.load("areas/items/text");
     await context.sync();
 
     const categoriesNames = categoriesNamesRange.areas.items.map((item) => item.text[0][0]);
 
     const categoriesMap: Record<string, string[]> = {};
-    for (const i in categoriesRows) {
-      const rowIndex = categoriesRows[i];
-      const subCategoryRange = categoriesSheet.getRange(`B${rowIndex + 2}:B${rowIndex + 11}`).load("text");
-      await context.sync();
-      categoriesMap[categoriesNames[i]] = subCategoryRange.text.map((item) => item[0]).filter((x) => x && x !== ".");
-    }
+    const subCategoriesRanges = categoriesRows.map((rowIndex) =>
+      categoriesSheet.getRange(`B${rowIndex + 2}:B${rowIndex + 11}`).load("text")
+    );
+    await context.sync();
+
+    categoriesNames.forEach((name, index) => {
+      categoriesMap[name] = subCategoriesRanges[index].text.map((item) => item[0]).filter((x) => x && x !== ".");
+    });
 
     return categoriesMap;
   });
