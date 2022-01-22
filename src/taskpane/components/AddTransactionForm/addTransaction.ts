@@ -10,7 +10,7 @@ export const addTransaction = (category: string, subcategory: string, day: numbe
   Excel.run(async (context) => {
     const sheet = context.workbook.worksheets.getActiveWorksheet();
 
-    const searchRangeCategory = sheet.getUsedRange();
+    const searchRangeCategory = sheet.getRange("A50:AZ300");
     const searchRangeDay = sheet.getRange("A1:AZ2");
 
     const foundCategory = searchRangeCategory.find(category, searchSettings).load();
