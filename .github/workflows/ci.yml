@@ -1,4 +1,4 @@
-name: Build and deploy
+name: Build, lint and deploy
 
 on:
   push:
@@ -26,26 +26,14 @@ jobs:
           npm install
           npm run build
 
-  lint:
-    name: Lint
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Run linters
         uses: wearerequired/lint-action@v1
         with:
           eslint: true
 
-  deploy:
-    name: Deploy
-    needs: build
-    if: github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Deploy to Azure
         uses: TravisSpomer/deploy-to-azure-storage@v1.4.0
+        if: github.ref == 'refs/heads/master'
         with:
           source-path: dist
           sas-url: ${{ secrets.DEPLOY_SAS_URL }}
