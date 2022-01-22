@@ -69,6 +69,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
             label={t("price")}
             placeholder={t("price-placeholder")}
             type="number"
+            step={0.01}
             {...field}
             value={field.value?.toString()}
             required={true}
