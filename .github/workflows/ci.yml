@@ -1,0 +1,52 @@
+name: Build and deploy
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+
+      - name: Build
+        run: |
+          npm install
+          npm run build
+
+  lint:
+    name: Lint
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run linters
+        uses: wearerequired/lint-action@v1
+        with:
+          eslint: true
+
+  deploy:
+    name: Deploy
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Azure
+        uses: TravisSpomer/deploy-to-azure-storage@v1.4.0
+        with:
+          source-path: dist
+          sas-url: ${{ secrets.DEPLOY_SAS_URL }}
+          require-index: false
