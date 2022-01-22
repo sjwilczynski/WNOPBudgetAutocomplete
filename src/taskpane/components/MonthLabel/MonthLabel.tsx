@@ -2,12 +2,13 @@
 
 import * as React from "react";
 import { useTranslation } from "react-i18next";
+import "./MonthLabel.css";
 
 export const MonthLabel = () => {
   const { t } = useTranslation();
   const month = useMonth();
   return (
-    <h2>
+    <h2 className="label">
       {t("current-month")}: {month}
     </h2>
   );

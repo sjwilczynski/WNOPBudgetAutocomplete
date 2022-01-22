@@ -2,7 +2,7 @@ import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { AddTransactionForm } from "./AddTransactionForm/AddTransactionForm";
 import { Header } from "./Header/Header";
-import { MonthLabel } from "./MonthLabel";
+import { MonthLabel } from "./MonthLabel/MonthLabel";
 import { Progress } from "./Progress";
 import "./App.css";
 
