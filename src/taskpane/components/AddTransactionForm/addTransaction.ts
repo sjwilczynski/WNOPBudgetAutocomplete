@@ -26,6 +26,7 @@ export const addTransaction = (category: string, subcategory: string, day: numbe
     const rowIndex = foundSubCategory.rowIndex;
     const columnIndex = foundDay.columnIndex;
     const cell = sheet.getCell(rowIndex, columnIndex).load("values");
+    cell.select();
 
     await context.sync();
     const currentValue = cell.values[0][0];
