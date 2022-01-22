@@ -28,6 +28,7 @@ jobs:
         uses: wearerequired/lint-action@v1
         with:
           eslint: true
+          eslint_extensions: ts,tsx
 
       - name: Build
         run: npm run build
