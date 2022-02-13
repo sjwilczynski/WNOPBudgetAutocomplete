@@ -92,6 +92,9 @@ module.exports = async (env, options) => {
         Promise: ["es6-promise", "Promise"],
       }),
     ].concat(dev ? [new ReactRefreshWebpackPlugin()] : []),
+    optimization: {
+      runtimeChunk: "single",
+    },
     devServer: {
       hot: true,
       headers: {
