@@ -120,7 +120,7 @@ function useYupSchema() {
     .object({
       categoryDetails: yup.string().required(),
       day: yup.number().typeError(t("day-type-error")).required().min(1).max(31),
-      price: yup.number().typeError(t("price-type-error")).required().min(0),
+      price: yup.number().typeError(t("price-type-error")).required(),
     })
     .required();
 }
