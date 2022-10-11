@@ -1,5 +1,12 @@
 import * as React from "react";
-import { ComboBox, IComboBoxOption, PrimaryButton, SelectableOptionMenuItemType, TextField } from "@fluentui/react";
+import {
+  ComboBox,
+  IComboBoxOption,
+  initializeIcons,
+  PrimaryButton,
+  SelectableOptionMenuItemType,
+  TextField,
+} from "@fluentui/react";
 import { Controller, useForm } from "react-hook-form";
 import { addTransaction } from "./addTransaction";
 import * as yup from "yup";
@@ -15,6 +22,8 @@ type Props = {
 };
 
 type FormData = yup.InferType<ReturnType<typeof useYupSchema>>;
+
+initializeIcons();
 
 export const AddTransactionForm = ({ categories }: Props) => {
   const schema = useYupSchema();
@@ -51,6 +60,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
         control={control}
         render={({ field }) => (
           <TextField
+            className="textfield"
             label={t("day")}
             placeholder={t("day-placeholder")}
             type="number"
@@ -58,6 +68,8 @@ export const AddTransactionForm = ({ categories }: Props) => {
             value={field.value?.toString()}
             required={true}
             errorMessage={errors.day?.message}
+            iconProps={{ iconName: "Calendar", className: "icon" }}
+            onFocus={(e) => e.currentTarget.select()}
           />
         )}
       />
@@ -66,6 +78,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
         control={control}
         render={({ field }) => (
           <TextField
+            className="textfield"
             label={t("price")}
             placeholder={t("price-placeholder")}
             type="number"
@@ -74,6 +87,8 @@ export const AddTransactionForm = ({ categories }: Props) => {
             value={field.value?.toString()}
             required={true}
             errorMessage={errors.price?.message}
+            iconProps={{ iconName: "Money", className: "icon" }}
+            onFocus={(e) => e.currentTarget.select()}
           />
         )}
       />
@@ -120,7 +135,7 @@ function useYupSchema() {
     .object({
       categoryDetails: yup.string().required(),
       day: yup.number().typeError(t("day-type-error")).required().min(1).max(31),
-      price: yup.number().typeError(t("price-type-error")).required().min(0),
+      price: yup.number().typeError(t("price-type-error")).required(),
     })
     .required();
 }

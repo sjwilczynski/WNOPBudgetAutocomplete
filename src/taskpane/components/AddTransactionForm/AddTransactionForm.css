@@ -7,6 +7,18 @@
   opacity: 0.5;
 }
 
+.textfield .ms-TextField-fieldGroup{
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.icon {
+  position: static;
+  padding-left: 8px;
+}
 .submit {
   margin-top: 24px;
+  width: 70%;
+  align-self: center;
+  margin-bottom: 24px;
 }
