@@ -69,6 +69,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
             required={true}
             errorMessage={errors.day?.message}
             iconProps={{ iconName: "Calendar", className: "icon" }}
+            onFocus={e => e.currentTarget.select()}
           />
         )}
       />
@@ -87,6 +88,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
             required={true}
             errorMessage={errors.price?.message}
             iconProps={{ iconName: "Money", className: "icon" }}
+            onFocus={e => e.currentTarget.select()}
           />
         )}
       />
