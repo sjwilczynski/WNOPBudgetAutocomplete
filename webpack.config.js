@@ -3,7 +3,6 @@
 const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const webpack = require("webpack");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 const urlDev = "https://localhost:3000/";
@@ -20,8 +19,7 @@ module.exports = async (env, options) => {
   const config = {
     devtool: "source-map",
     entry: {
-      polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
-      vendor: ["react", "react-dom", "core-js", "@fluentui/react"],
+      vendor: ["react", "react-dom", "@fluentui/react"],
       taskpane: "./src/taskpane/index.tsx",
     },
     output: {
@@ -86,10 +84,7 @@ module.exports = async (env, options) => {
       new HtmlWebpackPlugin({
         filename: "taskpane.html",
         template: "./src/taskpane/taskpane.html",
-        chunks: ["taskpane", "vendor", "polyfills"],
-      }),
-      new webpack.ProvidePlugin({
-        Promise: ["es6-promise", "Promise"],
+        chunks: ["taskpane", "vendor"],
       }),
     ].concat(dev ? [new ReactRefreshWebpackPlugin()] : []),
     optimization: {
