@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
     "target": "es5",
     "esModuleInterop": true,
     "module": "commonjs",
