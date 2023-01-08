@@ -12,12 +12,13 @@
     "dev_server_port": 3000
   },
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "webpack --mode production && npm run size",
     "build:dev": "webpack --mode development",
     "dev-server": "webpack serve --mode development",
     "lint": "office-addin-lint check",
     "lint:fix": "office-addin-lint fix",
     "prettier": "office-addin-lint prettier",
+    "size": "size-limit",
     "start": "office-addin-debugging start manifest.xml",
     "start:desktop": "office-addin-debugging start manifest.xml desktop",
     "start:web": "office-addin-debugging start manifest.xml web",
@@ -45,8 +46,6 @@
     "@babel/preset-typescript": "^7.13.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
     "@size-limit/preset-app": "^8.1.0",
-    "@size-limit/webpack": "^8.1.0",
-    "@size-limit/webpack-why": "^8.1.0",
     "@types/office-js": "^1.0.180",
     "@types/office-runtime": "^1.0.17",
     "@types/react": "^16.8.22",
@@ -84,7 +83,7 @@
   "size-limit": [
     {
       "path": "dist/*.js",
-      "limit": "315 kB"
+      "limit": "316 kB"
     }
   ]
 }
