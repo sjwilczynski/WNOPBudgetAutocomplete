@@ -44,6 +44,9 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.13.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
+    "@size-limit/preset-app": "^8.1.0",
+    "@size-limit/webpack": "^8.1.0",
+    "@size-limit/webpack-why": "^8.1.0",
     "@types/office-js": "^1.0.180",
     "@types/office-runtime": "^1.0.17",
     "@types/react": "^16.8.22",
@@ -76,5 +79,11 @@
   "prettier": "office-addin-prettier-config",
   "browserslist": [
     "ie 11"
+  ],
+  "size-limit": [
+    {
+      "path": "dist/*.js",
+      "limit": "315 kB"
+    }
   ]
 }
