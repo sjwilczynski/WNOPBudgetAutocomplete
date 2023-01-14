@@ -1,5 +1,5 @@
 import App from "./components/App";
-import { FluentProvider } from "@fluentui/react-components";
+import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { getCategories } from "./getCategories";
@@ -14,8 +14,10 @@ const renderApp = (categories: Record<string, string[]> | undefined) => {
 };
 
 const render = (component: React.ReactNode) => {
-  // TODO: test theme
-  ReactDOM.render(<FluentProvider>{component}</FluentProvider>, document.getElementById("container"));
+  ReactDOM.render(
+    <FluentProvider theme={webLightTheme}>{component}</FluentProvider>,
+    document.getElementById("container")
+  );
 };
 
 Office.onReady(async (info) => {
