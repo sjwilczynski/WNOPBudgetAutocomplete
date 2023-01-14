@@ -1,5 +1,5 @@
 import * as React from "react";
-import { MessageBar, MessageBarType } from "@fluentui/react";
+import { Alert } from "@fluentui/react-components/unstable";
 
 type Props = {
   message?: string;
@@ -7,8 +7,8 @@ type Props = {
 };
 
 export const ErrorMessage = ({ message, children }: Props) => (
-  <MessageBar messageBarType={MessageBarType.error}>
+  <Alert intent="error">
     {message}
     {children}
-  </MessageBar>
+  </Alert>
 );

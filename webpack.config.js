@@ -19,7 +19,7 @@ module.exports = async (env, options) => {
   const config = {
     devtool: "source-map",
     entry: {
-      vendor: ["react", "react-dom", "@fluentui/react"],
+      vendor: ["react", "react-dom"],
       taskpane: "./src/taskpane/index.tsx",
     },
     output: {

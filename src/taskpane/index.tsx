@@ -1,6 +1,5 @@
 import App from "./components/App";
-import { initializeIcons } from "@fluentui/font-icons-mdl2";
-import { ThemeProvider } from "@fluentui/react";
+import { FluentProvider } from "@fluentui/react-components";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { getCategories } from "./getCategories";
@@ -10,14 +9,13 @@ import { IssuesLink } from "./components/IssuesLink/IssuesLink";
 
 /* global document, Office */
 
-initializeIcons();
-
 const renderApp = (categories: Record<string, string[]> | undefined) => {
   render(<App categories={categories} />);
 };
 
 const render = (component: React.ReactNode) => {
-  ReactDOM.render(<ThemeProvider>{component}</ThemeProvider>, document.getElementById("container"));
+  // TODO: test theme
+  ReactDOM.render(<FluentProvider>{component}</FluentProvider>, document.getElementById("container"));
 };
 
 Office.onReady(async (info) => {
@@ -30,6 +28,7 @@ Office.onReady(async (info) => {
         const categories = await getCategories();
         renderApp(categories);
       } catch {
+        // TODO: test
         render(
           <ErrorMessage message={t("error-get-categories")}>
             <IssuesLink />
