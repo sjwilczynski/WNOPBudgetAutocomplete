@@ -19,7 +19,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
     handleSubmit,
     control,
     formState: { errors, isDirty, isValid },
-  } = useForm<FormData>({ resolver, mode: "onChange" });
+  } = useForm<FormData>({ resolver, mode: "onTouched" });
   const { t } = useTranslation();
 
   return (
