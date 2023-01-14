@@ -35,7 +35,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
             placeholder={t("day-placeholder")}
             type="number"
             {...field}
-            value={field.value?.toString()}
+            value={field.value?.toString() ?? ""}
             required={true}
             validationState={errors.day ? "error" : "success"}
             validationMessage={errors.day?.message}
@@ -55,7 +55,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
             type="number"
             step={0.01}
             {...field}
-            value={field.value?.toString()}
+            value={field.value?.toString() ?? ""}
             required={true}
             validationState={errors.price ? "error" : "success"}
             validationMessage={errors.price?.message}
@@ -72,9 +72,6 @@ export const AddTransactionForm = ({ categories }: Props) => {
 };
 
 function onSubmit({ categoryDetails, day, price }: FormData): void {
-  const separatorStart = categoryDetails.indexOf(SEPARATOR);
-  const separatorEnd = categoryDetails.indexOf(SEPARATOR) + SEPARATOR.length;
-  const category = categoryDetails.substring(0, separatorStart);
-  const subcategory = categoryDetails.substring(separatorEnd);
+  const [category, subcategory] = categoryDetails.split(SEPARATOR);
   addTransaction(category, subcategory, day, price);
 }
