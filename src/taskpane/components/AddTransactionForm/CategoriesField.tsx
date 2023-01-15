@@ -3,7 +3,7 @@ import { Control, Controller, FieldError } from "react-hook-form";
 import { ComboboxField, OptionGroup, Option } from "@fluentui/react-components/unstable";
 import { useTranslation } from "react-i18next";
 import { FormData, SEPARATOR } from "./formSchema";
-import "./CategoryField.css";
+import "./CategoriesField.css";
 
 type Props = {
   categories: Record<string, string[]>;
@@ -20,6 +20,7 @@ export const CategoriesField = ({ categories, control, error }: Props) => {
     <Controller
       name="categoryDetails"
       control={control}
+      defaultValue=""
       render={({ field }) => (
         <ComboboxField
           {...field}
@@ -50,11 +51,15 @@ const CategoryOptions = React.memo(
   ({ filter, categories }: { filter: string; categories: Record<string, string[]> }) => {
     const matches = (filter: string, text: string) => text.toLowerCase().indexOf(filter.toLowerCase()) > -1;
     const macthesFilter = (subcategory: string) => matches(filter, subcategory);
+    const matchingCategories = Object.entries(categories).filter(([, subcatgeories]) =>
+      subcatgeories.some(macthesFilter)
+    );
+
+    const { t } = useTranslation();
     return (
       <>
-        {Object.entries(categories)
-          .filter(([, subcatgeories]) => subcatgeories.some(macthesFilter))
-          .map(([category, subCategories]) => (
+        {matchingCategories.length > 0 ? (
+          matchingCategories.map(([category, subCategories]) => (
             <OptionGroup key={category} label={category}>
               {subCategories.filter(macthesFilter).map((subcategory) => {
                 const key = `${category}${SEPARATOR}${subcategory}`;
@@ -65,7 +70,12 @@ const CategoryOptions = React.memo(
                 );
               })}
             </OptionGroup>
-          ))}
+          ))
+        ) : (
+          <Option value="no-matches" text="No matches" disabled>
+            {t("no-matches")}
+          </Option>
+        )}
       </>
     );
   }
