@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import "./AddTransactionForm.css";
 import { Button } from "@fluentui/react-components";
 import { CalendarLtr24Regular, Money24Regular } from "@fluentui/react-icons";
-import { useFormResolver, FormData, SEPARATOR } from "./formSchema";
+import { useFormResolver, FormData, FormContext } from "./formSchema";
 import { CategoriesField } from "./CategoriesField";
 
 type Props = {
@@ -18,13 +18,19 @@ export const AddTransactionForm = ({ categories }: Props) => {
   const {
     handleSubmit,
     control,
+    setValue,
     formState: { errors, isDirty, isValid },
-  } = useForm<FormData>({ resolver, mode: "onTouched" });
+  } = useForm<FormData, FormContext>({ resolver, mode: "onTouched", context: { categories } });
   const { t } = useTranslation();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form">
-      <CategoriesField categories={categories} control={control} error={errors.categoryDetails} />
+      <CategoriesField
+        categories={categories}
+        control={control}
+        error={errors.subcategory ?? errors.category}
+        setValue={setValue}
+      />
       <Controller
         name="day"
         control={control}
@@ -71,7 +77,6 @@ export const AddTransactionForm = ({ categories }: Props) => {
   );
 };
 
-function onSubmit({ categoryDetails, day, price }: FormData): void {
-  const [category, subcategory] = categoryDetails.split(SEPARATOR);
+function onSubmit({ category, subcategory, day, price }: FormData): void {
   addTransaction(category, subcategory, day, price);
 }
