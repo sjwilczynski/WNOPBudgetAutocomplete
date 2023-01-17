@@ -8,7 +8,9 @@ type Props = {
 
 export const ErrorMessage = ({ message, children }: Props) => (
   <Alert intent="error">
-    {message}
-    {children}
+    <span>
+      {message}
+      {children}
+    </span>
   </Alert>
 );
