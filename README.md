@@ -14,6 +14,8 @@ Poniżej znajduje się krótkie demo, jak używać dodatku:
 
 ### Instalacja
 
+#### Excel w przeglądarce
+
 Żeby zainstalować dodatek:
 
 - pobierz [plik manifest.prod.xml](./manifest.prod.xml)
@@ -22,6 +24,10 @@ Poniżej znajduje się krótkie demo, jak używać dodatku:
 Wideo:
 
 ![Jak zainstalować dodatek](./gifs/installAddIn.gif)
+
+#### Excel na Windowsie
+
+Załaduj dodatek zgodnie z [instrukcją](https://learn.microsoft.com/en-us/office/dev/add-ins/testing/create-a-network-shared-folder-catalog-for-task-pane-and-content-add-ins).
 
 ---
 
@@ -37,6 +43,8 @@ Below there is a short video presenting the functionality:
 
 ### Instalation
 
+#### Excel online
+
 To install the add-in:
 
 - download [plik manifest.prod.xml](./manifest.prod.xml)
@@ -45,6 +53,10 @@ To install the add-in:
 Wideo:
 
 ![How to install add-in](./gifs/installAddIn.gif)
+
+#### Excel desktop
+
+Load the add-in according to [this instruction](https://learn.microsoft.com/en-us/office/dev/add-ins/testing/create-a-network-shared-folder-catalog-for-task-pane-and-content-add-ins).
 
 ## Technical details
 
