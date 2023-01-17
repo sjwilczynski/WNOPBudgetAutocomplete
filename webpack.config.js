@@ -3,7 +3,6 @@
 const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const webpack = require("webpack");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 const urlDev = "https://localhost:3000/";
@@ -11,7 +10,7 @@ const urlProd = "https://sjwilstorage.z16.web.core.windows.net/";
 
 async function getHttpsOptions() {
   const httpsOptions = await devCerts.getHttpsServerOptions();
-  return { cacert: httpsOptions.ca, key: httpsOptions.key, cert: httpsOptions.cert };
+  return { ca: httpsOptions.ca, key: httpsOptions.key, cert: httpsOptions.cert };
 }
 
 module.exports = async (env, options) => {
@@ -20,12 +19,10 @@ module.exports = async (env, options) => {
   const config = {
     devtool: "source-map",
     entry: {
-      polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
-      vendor: ["react", "react-dom", "core-js", "@fluentui/react"],
+      vendor: ["react", "react-dom"],
       taskpane: "./src/taskpane/index.tsx",
     },
     output: {
-      devtoolModuleFilenameTemplate: "webpack:///[resource-path]?[loaders]",
       clean: true,
     },
     resolve: {
@@ -86,10 +83,7 @@ module.exports = async (env, options) => {
       new HtmlWebpackPlugin({
         filename: "taskpane.html",
         template: "./src/taskpane/taskpane.html",
-        chunks: ["taskpane", "vendor", "polyfills"],
-      }),
-      new webpack.ProvidePlugin({
-        Promise: ["es6-promise", "Promise"],
+        chunks: ["taskpane", "vendor"],
       }),
     ].concat(dev ? [new ReactRefreshWebpackPlugin()] : []),
     optimization: {
@@ -100,7 +94,10 @@ module.exports = async (env, options) => {
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
-      https: env.WEBPACK_BUILD || options.https !== undefined ? options.https : await getHttpsOptions(),
+      server: {
+        type: "https",
+        options: env.WEBPACK_BUILD || options.https !== undefined ? options.https : await getHttpsOptions(),
+      },
       port: process.env.npm_package_config_dev_server_port || 3000,
     },
   };

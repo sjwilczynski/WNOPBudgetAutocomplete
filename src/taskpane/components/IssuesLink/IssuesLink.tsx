@@ -1,4 +1,4 @@
-import { Link } from "@fluentui/react";
+import { Link } from "@fluentui/react-components";
 import * as React from "react";
 import "./IssuesLink.css";
 

@@ -6,9 +6,8 @@
   "configurations": [
     {
       "name": "Excel Desktop (Edge Chromium)",
-      "type": "edge",
+      "type": "msedge",
       "request": "attach",
-      "useWebView": "advanced",
       "port": 9229,
       "timeout": 600000,
       "webRoot": "${workspaceRoot}",
@@ -28,9 +27,9 @@
     },
     {
       "name": "Outlook Desktop (Edge Chromium)",
-      "type": "edge",
+      "type": "msedge",
       "request": "attach",
-      "useWebView": "advanced",
+      "useWebView": true,
       "port": 9229,
       "timeout": 600000,
       "webRoot": "${workspaceRoot}",
@@ -50,9 +49,8 @@
     },
     {
       "name": "PowerPoint Desktop (Edge Chromium)",
-      "type": "edge",
+      "type": "msedge",
       "request": "attach",
-      "useWebView": "advanced",
       "port": 9229,
       "timeout": 600000,
       "webRoot": "${workspaceRoot}",
@@ -72,9 +70,8 @@
     },
     {
       "name": "Word Desktop (Edge Chromium)",
-      "type": "edge",
+      "type": "msedge",
       "request": "attach",
-      "useWebView": "advanced",
       "port": 9229,
       "timeout": 600000,
       "webRoot": "${workspaceRoot}",
@@ -101,7 +98,7 @@
     },
     {
       "name": "Office Online (Edge Chromium)",
-      "type": "pwa-msedge",
+      "type": "msedge",
       "request": "launch",
       "port": 9222,
       "webRoot": "${workspaceFolder}",

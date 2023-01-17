@@ -1,24 +1,20 @@
 .form {
   display: flex;
   flex-direction: column;
+  gap: 12px;
 }
 
 .form input::placeholder {
   opacity: 0.5;
 }
 
-.textfield .ms-TextField-fieldGroup{
-  flex-direction: row-reverse;
-  align-items: center;
+/* make sure fluentui fields have full width */
+div.fui-ComboboxField,
+div.fui-InputField {
+  justify-items: stretch;
 }
 
-.icon {
-  position: static;
-  padding-left: 8px;
-}
 .submit {
-  margin-top: 24px;
   width: 70%;
   align-self: center;
-  margin-bottom: 24px;
 }
