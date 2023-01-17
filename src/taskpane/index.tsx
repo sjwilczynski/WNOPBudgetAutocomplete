@@ -30,7 +30,6 @@ Office.onReady(async (info) => {
         const categories = await getCategories();
         renderApp(categories);
       } catch {
-        // TODO: test
         render(
           <ErrorMessage message={t("error-get-categories")}>
             <IssuesLink />

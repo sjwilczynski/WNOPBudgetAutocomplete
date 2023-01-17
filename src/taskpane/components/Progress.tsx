@@ -6,6 +6,5 @@ type Props = {
 };
 
 export function Progress({ message }: Props) {
-  // TODO: test
   return <Spinner size="large" label={message} />;
 }
