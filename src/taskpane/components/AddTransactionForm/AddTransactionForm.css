@@ -8,9 +8,13 @@
   opacity: 0.5;
 }
 
+/* make sure fluentui fields have full width */
+div.fui-ComboboxField,
+div.fui-InputField {
+  justify-items: stretch;
+}
+
 .submit {
-  margin-top: 24px;
   width: 70%;
   align-self: center;
-  margin-bottom: 24px;
 }
