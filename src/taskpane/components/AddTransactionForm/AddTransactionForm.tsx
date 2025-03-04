@@ -1,5 +1,5 @@
 import * as React from "react";
-import { InputField } from "@fluentui/react-components/unstable";
+import { Field, Input } from "@fluentui/react-components";
 import { Controller, useForm } from "react-hook-form";
 import { addTransaction } from "./addTransaction";
 import { useTranslation } from "react-i18next";
@@ -35,39 +35,45 @@ export const AddTransactionForm = ({ categories }: Props) => {
         name="day"
         control={control}
         render={({ field }) => (
-          <InputField
+          <Field
             className="textfield"
             label={t("day")}
-            placeholder={t("day-placeholder")}
-            type="number"
-            {...field}
-            value={field.value?.toString() ?? ""}
             required={true}
             validationState={errors.day ? "error" : "success"}
             validationMessage={errors.day?.message}
-            contentBefore={<CalendarLtr24Regular />}
-            onFocus={(e) => e.currentTarget.select()}
-          />
+          >
+            <Input
+              placeholder={t("day-placeholder")}
+              type="number"
+              {...field}
+              value={field.value?.toString() ?? ""}
+              contentBefore={<CalendarLtr24Regular />}
+              onFocus={(e) => e.currentTarget.select()}
+            />
+          </Field>
         )}
       />
       <Controller
         name="price"
         control={control}
         render={({ field }) => (
-          <InputField
+          <Field
             className="textfield"
             label={t("price")}
-            placeholder={t("price-placeholder")}
-            type="number"
-            step={0.01}
-            {...field}
-            value={field.value?.toString() ?? ""}
             required={true}
             validationState={errors.price ? "error" : "success"}
             validationMessage={errors.price?.message}
-            contentBefore={<Money24Regular />}
-            onFocus={(e) => e.currentTarget.select()}
-          />
+          >
+            <Input
+              placeholder={t("price-placeholder")}
+              type="number"
+              step={0.01}
+              {...field}
+              value={field.value?.toString() ?? ""}
+              contentBefore={<Money24Regular />}
+              onFocus={(e) => e.currentTarget.select()}
+            />
+          </Field>
         )}
       />
       <Button appearance="primary" className="submit" type="submit" disabled={!isDirty || !isValid}>

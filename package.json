@@ -28,7 +28,7 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
-    "@fluentui/react-components": "^9.9.0",
+    "@fluentui/react-components": "^9.60.0",
     "@fluentui/react-icons": "^2.0.100",
     "@hookform/resolvers": "^2.9.5",
     "i18next": "^22.0.0",

@@ -31,15 +31,15 @@ Office.onReady(async (info) => {
         renderApp(categories);
       } catch {
         render(
-          <ErrorMessage message={t("error-get-categories")}>
+          <ErrorMessage message={t("error-get-categories") ?? ""}>
             <IssuesLink />
           </ErrorMessage>
         );
       }
     } else {
-      render(<ErrorMessage message={t("error-old-api")} />);
+      render(<ErrorMessage message={t("error-old-api") ?? ""} />);
     }
   } else {
-    render(<ErrorMessage message={t("error-excel-only")} />);
+    render(<ErrorMessage message={t("error-excel-only") ?? ""} />);
   }
 });

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Control, Controller, FieldError, UseFormSetValue } from "react-hook-form";
-import { ComboboxField, OptionGroup, Option } from "@fluentui/react-components/unstable";
+import { Field, Combobox, Option, OptionGroup } from "@fluentui/react-components";
 import { useTranslation } from "react-i18next";
 import { FormData, SEPARATOR } from "./formSchema";
 import "./CategoriesField.css";
@@ -30,31 +30,34 @@ export const CategoriesField = ({ categories, control, error, setValue }: Props)
         control={control}
         defaultValue=""
         render={({ field }) => (
-          <ComboboxField
-            {...field}
+          <Field
             label={t("choose-category")}
-            autoComplete="on"
-            inlinePopup={true}
-            onChange={(event) => {
-              const value = event.target.value.trim();
-              setCategoryFilter(value);
-              field.onChange(value);
-            }}
-            onOptionSelect={(_event, { optionValue, optionText }) => {
-              // needed to make sure selection is not cleared on retyping
-              if (optionText && optionValue) {
-                setValue("category", optionText?.split(SEPARATOR)[0]);
-                field.onChange(optionValue);
-              }
-            }}
             required={true}
             validationState={error ? "error" : "success"}
             validationMessage={error?.message}
-            listbox={{ className: "category-listbox" }}
-            onFocus={(e) => e.currentTarget.select()}
           >
-            <CategoryOptions filter={categoryFilter} categories={categories} />
-          </ComboboxField>
+            <Combobox
+              {...field}
+              autoComplete="on"
+              inlinePopup={true}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                const value = event.target.value.trim();
+                setCategoryFilter(value);
+                field.onChange(value);
+              }}
+              onOptionSelect={(_, data) => {
+                // needed to make sure selection is not cleared on retyping
+                if (data.optionText && data.optionValue) {
+                  setValue("category", data.optionText?.split(SEPARATOR)[0]);
+                  field.onChange(data.optionValue);
+                }
+              }}
+              listbox={{ className: "category-listbox" }}
+              onFocus={(e) => e.currentTarget.select()}
+            >
+              <CategoryOptions filter={categoryFilter} categories={categories} />
+            </Combobox>
+          </Field>
         )}
       />
     </>
