@@ -43,11 +43,11 @@ export const ValidForm: Story = {
     const canvas = within(canvasElement);
     await new Promise((resolve) => setTimeout(resolve, 500));
     const submitButton = await canvas.findByRole("button", { name: "Add transaction" });
-    expect(submitButton).toBeDisabled();
+    await expect(submitButton).toBeDisabled();
     await fillInForm(canvas, "Car", "1", "100");
     await expect(submitButton).toBeEnabled();
     await userEvent.click(submitButton);
-    expect(submitTransactionMock).toHaveBeenCalledWith(
+    await expect(submitTransactionMock).toHaveBeenCalledWith(
       {
         category: "Transportation",
         subcategory: "Car",
@@ -67,9 +67,9 @@ export const InvalidCategory: Story = {
     await userEvent.type(categoryField, "Invalid");
     await userEvent.click(canvas.getByRole("spinbutton", { name: "Day" }));
     const submitButton = canvas.getByRole("button", { name: "Add transaction" });
-    expect(submitButton).toBeDisabled();
-    expect(canvas.getByText("Subcategory is not valid")).toBeInTheDocument();
-    expect(categoryField).toBeInvalid();
+    await expect(submitButton).toBeDisabled();
+    await expect(canvas.getByText("Subcategory is not valid")).toBeInTheDocument();
+    await expect(categoryField).toBeInvalid();
   },
 };
 
@@ -81,9 +81,9 @@ export const InvalidDay: Story = {
     await userEvent.type(dayField, "32");
     const submitButton = canvas.getByRole("button", { name: "Add transaction" });
     await userEvent.click(canvas.getByRole("spinbutton", { name: "Price" }));
-    expect(submitButton).toBeDisabled();
-    expect(canvas.getByText("day must be less than or equal to 31")).toBeInTheDocument();
-    expect(dayField).toBeInvalid();
+    await expect(submitButton).toBeDisabled();
+    await expect(canvas.getByText("day must be less than or equal to 31")).toBeInTheDocument();
+    await expect(dayField).toBeInvalid();
   },
 };
 
@@ -95,9 +95,9 @@ export const InvalidPrice: Story = {
     await userEvent.type(priceField, "103124-");
     await userEvent.click(canvas.getByRole("spinbutton", { name: "Day" }));
     const submitButton = canvas.getByRole("button", { name: "Add transaction" });
-    expect(submitButton).toBeDisabled();
-    expect(canvas.getByText("Price must be a number")).toBeInTheDocument();
-    expect(priceField).toBeInvalid();
+    await expect(submitButton).toBeDisabled();
+    await expect(canvas.getByText("Price must be a number")).toBeInTheDocument();
+    await expect(priceField).toBeInvalid();
   },
 };
 
@@ -111,13 +111,13 @@ export const KeyboardNavigation: Story = {
     const categoryField = canvas.getByRole("combobox", { name: "Category" });
     const dayField = canvas.getByRole("spinbutton", { name: "Day" });
     const priceField = canvas.getByRole("spinbutton", { name: "Price" });
-    expect(submitButton).toHaveFocus();
+    await expect(submitButton).toHaveFocus();
     await userEvent.tab({ shift: true });
-    expect(priceField).toHaveFocus();
+    await expect(priceField).toHaveFocus();
     await userEvent.tab({ shift: true });
-    expect(dayField).toHaveFocus();
+    await expect(dayField).toHaveFocus();
     await userEvent.tab({ shift: true });
-    expect(categoryField).toHaveFocus();
+    await expect(categoryField).toHaveFocus();
   },
 };
 
