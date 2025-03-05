@@ -1,9 +1,9 @@
 /* global Excel, OfficeExtension */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const useMonth = () => {
   const [month, setMonth] = useState<string>("");
-  let handler: OfficeExtension.EventHandlerResult<unknown>;
+  const handlerRef = useRef<OfficeExtension.EventHandlerResult<unknown>>();
   useEffect(() => {
     Excel.run(async (context) => {
       const setMonthFromWorkbook = async () => {
@@ -14,11 +14,11 @@ export const useMonth = () => {
 
       setMonthFromWorkbook();
 
-      handler = context.workbook.onSelectionChanged.add(setMonthFromWorkbook);
+      handlerRef.current = context.workbook.onSelectionChanged.add(setMonthFromWorkbook);
     });
 
     return () => {
-      handler.remove();
+      handlerRef.current?.remove();
     };
   }, []);
   return month;
