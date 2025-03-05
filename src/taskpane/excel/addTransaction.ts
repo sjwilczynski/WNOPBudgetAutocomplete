@@ -33,3 +33,17 @@ export const addTransaction = (category: string, subcategory: string, day: numbe
     cell.values = [[currentValue + price]];
   });
 };
+
+export const submitTransaction = ({
+  category,
+  subcategory,
+  day,
+  price,
+}: {
+  category: string;
+  subcategory: string;
+  day: number;
+  price: number;
+}) => {
+  addTransaction(category, subcategory, day, price);
+};

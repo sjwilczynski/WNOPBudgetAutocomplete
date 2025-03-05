@@ -1,19 +1,22 @@
 import * as React from "react";
 import { Field, Input } from "@fluentui/react-components";
 import { Controller, useForm } from "react-hook-form";
-import { addTransaction } from "./addTransaction";
 import { useTranslation } from "react-i18next";
 import "./AddTransactionForm.css";
 import { Button } from "@fluentui/react-components";
 import { CalendarLtr24Regular, Money24Regular } from "@fluentui/react-icons";
 import { useFormResolver, FormData, FormContext } from "./formSchema";
 import { CategoriesField } from "./CategoriesField";
+import { useExcel } from "../../context/ExcelContext";
+
+export type FormSubmit = (data: FormData) => void;
 
 type Props = {
   categories: Record<string, string[]>;
 };
 
 export const AddTransactionForm = ({ categories }: Props) => {
+  const { submitTransaction } = useExcel();
   const resolver = useFormResolver();
   const {
     handleSubmit,
@@ -24,7 +27,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="form">
+    <form onSubmit={handleSubmit(submitTransaction)} className="form">
       <CategoriesField
         categories={categories}
         control={control}
@@ -82,7 +85,3 @@ export const AddTransactionForm = ({ categories }: Props) => {
     </form>
   );
 };
-
-function onSubmit({ category, subcategory, day, price }: FormData): void {
-  addTransaction(category, subcategory, day, price);
-}
