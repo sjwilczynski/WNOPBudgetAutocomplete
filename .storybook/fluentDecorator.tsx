@@ -7,7 +7,7 @@ import {
 } from "@fluentui/react-components";
 
 import { webLightTheme } from "@fluentui/react-components";
-import { Decorator, Preview } from "@storybook/react";
+import type { Decorator, Preview } from "@storybook/react";
 import * as React from "react";
 
 export const fluentDecorator: Decorator = (Story, context) => {
@@ -40,7 +40,7 @@ const getTheme = (themeName: ThemeName) => {
 };
 
 const themeNames = ["light", "dark", "high-contrast", "teams-light", "teams-dark"] as const;
-type ThemeName = typeof themeNames[number];
+type ThemeName = (typeof themeNames)[number];
 
 export const globalTypes: Preview["globalTypes"] = {
   theme: {
