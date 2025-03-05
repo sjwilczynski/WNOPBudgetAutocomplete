@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
 import { FieldError, Resolver, ResolverOptions, ResolverResult } from "react-hook-form";
+import { useEffect } from "react";
 
 export type FormContext = { categories: Record<string, string[]> };
 
@@ -11,11 +12,13 @@ function useYupSchema() {
     t,
     i18n: { language },
   } = useTranslation();
-  if (language === "pl-PL") {
-    yup.setLocale(yupLocalePL);
-  } else {
-    yup.setLocale({});
-  }
+  useEffect(() => {
+    if (language === "pl-PL") {
+      yup.setLocale(yupLocalePL);
+    } else {
+      yup.setLocale({});
+    }
+  }, [language]);
 
   return yup
     .object({
