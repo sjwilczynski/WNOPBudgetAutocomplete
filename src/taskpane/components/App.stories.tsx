@@ -4,6 +4,9 @@ import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import App from "./App";
 import { ExcelProvider } from "../context/ExcelContext";
 import * as React from "react";
+import { IssuesLink } from "./IssuesLink/IssuesLink";
+import { ErrorMessage } from "./ErrorMessage";
+import { useTranslation } from "react-i18next";
 
 const submitTransactionMock = fn();
 
@@ -118,6 +121,23 @@ export const KeyboardNavigation: Story = {
     expect(dayField).toHaveFocus();
     await userEvent.tab({ shift: true });
     expect(categoryField).toHaveFocus();
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    categories: undefined,
+  },
+};
+
+export const WithError: Story = {
+  render: () => {
+    const { t } = useTranslation();
+    return (
+      <ErrorMessage message={t("error-get-categories") ?? ""}>
+        <IssuesLink />
+      </ErrorMessage>
+    );
   },
 };
 
