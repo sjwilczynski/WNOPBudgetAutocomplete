@@ -1,19 +1,19 @@
 /* eslint-disable no-undef */
 
-const devCerts = require("office-addin-dev-certs");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+import { getHttpsServerOptions } from "office-addin-dev-certs";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 
 const urlDev = "https://localhost:3000/";
 const urlProd = "https://sjwilstorage.z16.web.core.windows.net/";
 
 async function getHttpsOptions() {
-  const httpsOptions = await devCerts.getHttpsServerOptions();
+  const httpsOptions = await getHttpsServerOptions();
   return { ca: httpsOptions.ca, key: httpsOptions.key, cert: httpsOptions.cert };
 }
 
-module.exports = async (env, options) => {
+export default async (env, options) => {
   const dev = options.mode === "development";
   const buildType = dev ? "dev" : "prod";
   const config = {
@@ -35,9 +35,9 @@ module.exports = async (env, options) => {
           exclude: /node_modules/,
           use: [
             {
-              loader: require.resolve("babel-loader"),
+              loader: "babel-loader",
               options: {
-                plugins: [dev && require.resolve("react-refresh/babel")].filter(Boolean),
+                plugins: [dev && "react-refresh/babel"].filter(Boolean),
               },
             },
           ],
@@ -96,7 +96,10 @@ module.exports = async (env, options) => {
       },
       server: {
         type: "https",
-        options: env.WEBPACK_BUILD || options.https !== undefined ? options.https : await getHttpsOptions(),
+        options:
+          env.WEBPACK_BUILD || options.https !== undefined
+            ? options.https
+            : await getHttpsOptions(),
       },
       port: process.env.npm_package_config_dev_server_port || 3000,
     },
