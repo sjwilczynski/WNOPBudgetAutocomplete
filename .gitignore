@@ -3,3 +3,5 @@ dist/
 stats.json
 
 *storybook.log
+storybook-static/
+coverage/

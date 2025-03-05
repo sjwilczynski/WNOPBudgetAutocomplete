@@ -1,7 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { defineConfig } from "vitest/config";
+import { coverageConfigDefaults, defineConfig } from "vitest/config";
 
 import { storybookTest } from "@storybook/experimental-addon-test/vitest-plugin";
 
@@ -35,5 +35,16 @@ export default defineConfig({
         },
       },
     ],
+    coverage: {
+      // 👇 Add this
+      exclude: [
+         ...coverageConfigDefaults.exclude,
+         '**/.storybook/**',
+         // 👇 This pattern must align with the `stories` property of your `.storybook/main.ts` config
+         '**/*.stories.*',
+         // 👇 This pattern must align with the output directory of `storybook build`
+         '**/storybook-static/**',
+       ], 
+    }
   },
 });
