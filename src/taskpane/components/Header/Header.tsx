@@ -1,5 +1,3 @@
-/* global require*/
-
 import * as React from "react";
 import "./Header.css";
 import logo from "../../../../assets/logo-80.png";
