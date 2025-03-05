@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Control, Controller, FieldError, UseFormSetValue } from "react-hook-form";
+import { type Control, Controller, type FieldError, type UseFormSetValue } from "react-hook-form";
 import { Field, Combobox, Option, OptionGroup } from "@fluentui/react-components";
 import { useTranslation } from "react-i18next";
-import { FormData, SEPARATOR } from "./formSchema";
+import { type FormData, SEPARATOR } from "./formSchema";
 import "./CategoriesField.css";
 
 type Props = {

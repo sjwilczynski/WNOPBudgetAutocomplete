@@ -17,7 +17,8 @@
     "noImplicitReturns": true,
     "noUnusedParameters": true,
     "pretty": true,
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "verbatimModuleSyntax": true
   },
   "exclude": ["node_modules"],
   "compileOnSave": false,

@@ -21,7 +21,9 @@ export const getCategories = () =>
     await context.sync();
 
     categoriesNames.forEach((name, index) => {
-      categoriesMap[name] = subCategoriesRanges[index].text.map((item) => item[0]).filter((x) => x && x !== ".");
+      categoriesMap[name] = subCategoriesRanges[index].text
+        .map((item) => item[0])
+        .filter((x) => x && x !== ".");
     });
 
     return categoriesMap;

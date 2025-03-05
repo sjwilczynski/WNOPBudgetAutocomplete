@@ -1,4 +1,4 @@
-import { Decorator, Meta, StoryObj } from "@storybook/react";
+import type { Decorator, Meta, StoryObj } from "@storybook/react";
 import { within, expect, userEvent, fn } from "@storybook/test";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import App from "./App";

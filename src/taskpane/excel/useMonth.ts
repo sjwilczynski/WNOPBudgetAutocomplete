@@ -1,3 +1,4 @@
+/* global Excel, OfficeExtension */
 import { useEffect, useState } from "react";
 
 export const useMonth = () => {

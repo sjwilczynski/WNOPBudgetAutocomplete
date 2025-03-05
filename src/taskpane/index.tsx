@@ -9,7 +9,7 @@ import { IssuesLink } from "./components/IssuesLink/IssuesLink";
 import { ExcelProvider } from "./context/ExcelContext";
 import { submitTransaction } from "./excel/addTransaction";
 import { useMonth } from "./excel/useMonth";
-/* global document, Office */
+/* global Office */
 
 const render = (component: React.ReactNode) => {
   ReactDOM.render(

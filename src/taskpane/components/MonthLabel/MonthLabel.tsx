@@ -1,5 +1,3 @@
-/* global Excel, OfficeExtension */
-
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import "./MonthLabel.css";

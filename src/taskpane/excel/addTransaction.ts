@@ -6,7 +6,12 @@ const searchSettings = {
   searchDirection: "Forward" as const,
 };
 
-export const addTransaction = (category: string, subcategory: string, day: number, price: number) => {
+export const addTransaction = (
+  category: string,
+  subcategory: string,
+  day: number,
+  price: number
+) => {
   Excel.run(async (context) => {
     const sheet = context.workbook.worksheets.getActiveWorksheet();
 

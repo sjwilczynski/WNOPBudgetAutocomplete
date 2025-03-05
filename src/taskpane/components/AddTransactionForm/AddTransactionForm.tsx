@@ -5,10 +5,11 @@ import { useTranslation } from "react-i18next";
 import "./AddTransactionForm.css";
 import { Button } from "@fluentui/react-components";
 import { CalendarLtr24Regular, Money24Regular } from "@fluentui/react-icons";
-import { useFormResolver, FormData, FormContext } from "./formSchema";
+import { useFormResolver, type FormData, type FormContext } from "./formSchema";
 import { CategoriesField } from "./CategoriesField";
 import { useExcel } from "../../context/ExcelContext";
 
+// eslint-disable-next-line no-unused-vars
 export type FormSubmit = (data: FormData) => void;
 
 type Props = {

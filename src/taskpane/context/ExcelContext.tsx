@@ -1,8 +1,8 @@
 import * as React from "react";
-import { FormData } from "../components/AddTransactionForm/formSchema";
+import type { FormSubmit } from "../components/AddTransactionForm/AddTransactionForm";
 
 type ExcelContextType = {
-  submitTransaction: (data: FormData) => void;
+  submitTransaction: FormSubmit;
   month: string;
 };
 
@@ -10,11 +10,15 @@ const ExcelContext = React.createContext<ExcelContextType | undefined>(undefined
 
 type ExcelProviderProps = {
   children: React.ReactNode;
-  submitTransaction: (data: FormData) => void;
+  submitTransaction: FormSubmit;
   month: string;
 };
 
-export const ExcelProvider: React.FC<ExcelProviderProps> = ({ children, submitTransaction, month }) => {
+export const ExcelProvider: React.FC<ExcelProviderProps> = ({
+  children,
+  submitTransaction,
+  month,
+}) => {
   const value = React.useMemo(() => ({ submitTransaction, month }), [submitTransaction, month]);
 
   return <ExcelContext.Provider value={value}>{children}</ExcelContext.Provider>;
