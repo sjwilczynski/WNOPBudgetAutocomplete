@@ -24,14 +24,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run linters
-        uses: wearerequired/lint-action@v1
-        with:
-          eslint: true
-          eslint_extensions: ts,tsx
-
-      - name: Build
-        run: npm run build
+      - name: Build, lint and test
+        run: npm run build && npm run lint && npm run test
 
       - name: Deploy to Azure
         uses: TravisSpomer/deploy-to-azure-storage@v1.4.0
