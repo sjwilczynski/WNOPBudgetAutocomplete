@@ -1,6 +1,10 @@
 import type { Preview } from "@storybook/react";
 import { fluentDecorator, globalTypes as fluentGlobalTypes } from "./fluentDecorator";
 import { withI18n, globalTypes as i18nGlobalTypes } from "./i18nDecorator";
+import { initialize, mswLoader } from "msw-storybook-addon";
+
+initialize();
+
 const preview: Preview = {
   parameters: {
     controls: {
@@ -19,3 +23,4 @@ const preview: Preview = {
 
 export default preview;
 export const decorators = [fluentDecorator, withI18n];
+export const loaders = [mswLoader];

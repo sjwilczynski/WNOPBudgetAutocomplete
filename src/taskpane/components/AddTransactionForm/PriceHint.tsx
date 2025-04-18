@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Spinner, Text } from "@fluentui/react-components";
-import type { UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { Spinner, Text, tokens } from "@fluentui/react-components";
+import type { UseFormSetError, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useCurrencyRate } from "./useCurrencyRate";
 import type { FormData } from "./formSchema";
@@ -24,11 +24,18 @@ const monthNameToNumber: Record<string, string> = {
 type PriceHintProps = {
   watch: UseFormWatch<FormData>;
   setValue: UseFormSetValue<FormData>;
+  setError: UseFormSetError<FormData>;
   dayValue: number | undefined;
   isDayValid: boolean;
 };
 
-export const PriceHint: React.FC<PriceHintProps> = ({ watch, setValue, dayValue, isDayValid }) => {
+export const PriceHint: React.FC<PriceHintProps> = ({
+  watch,
+  setValue,
+  setError,
+  dayValue,
+  isDayValid,
+}) => {
   const { t } = useTranslation();
   const { month, year } = useExcel();
 
@@ -50,19 +57,27 @@ export const PriceHint: React.FC<PriceHintProps> = ({ watch, setValue, dayValue,
     setValue("exchangeRate", rate);
   }, [rate, setValue]);
 
+  React.useEffect(() => {
+    if (isError) {
+      setError("currency", { type: "server", message: t("error-fetch-rate-unknown") });
+    }
+  }, [isError, setError, t]);
+
   if (currencyValue === "PLN") {
     return null;
   }
   if (rateLoading) {
     return <Spinner size="tiny" />;
   }
+
   if (isError) {
     return (
-      <Text size={200} weight="regular" style={{ color: "red" }}>
+      <Text size={200} weight="regular" style={{ color: tokens.colorPaletteRedForeground1 }}>
         {t("error-fetch-rate-unknown")}
       </Text>
     );
   }
+
   if (rate) {
     const decimalPoints = rate > 1 ? 2 : 3;
     return (

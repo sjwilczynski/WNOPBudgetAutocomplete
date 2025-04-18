@@ -24,6 +24,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
     handleSubmit,
     control,
     setValue,
+    setError,
     watch,
     formState: { errors, isDirty, isValid },
     getFieldState,
@@ -113,6 +114,7 @@ export const AddTransactionForm = ({ categories }: Props) => {
               <PriceHint
                 watch={watch}
                 setValue={setValue}
+                setError={setError}
                 dayValue={dayValue}
                 isDayValid={isDayValid}
               />

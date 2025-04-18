@@ -1,28 +1,18 @@
-import type { Decorator, Meta, StoryObj } from "@storybook/react";
-import { within, expect, userEvent, fn } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react";
+import { within, expect, userEvent, waitFor, screen } from "@storybook/test";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import App from "./App";
-import { ExcelProvider } from "../context/ExcelContext";
 import * as React from "react";
 import { IssuesLink } from "./IssuesLink/IssuesLink";
 import { ErrorMessage } from "./ErrorMessage";
 import { useTranslation } from "react-i18next";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const submitTransactionMock = fn();
-
-const queryClient = new QueryClient();
-const excelDecorator: Decorator = (Story) => (
-  <ExcelProvider submitTransaction={submitTransactionMock} month="January" year={2025}>
-    <Story />
-  </ExcelProvider>
-);
-
-const reactQueryDecorator: Decorator = (Story) => (
-  <QueryClientProvider client={queryClient}>
-    <Story />
-  </QueryClientProvider>
-);
+import {
+  excelDecorator,
+  nbpApiHandler,
+  nbpApiHandlerError,
+  reactQueryDecorator,
+  submitTransactionMock,
+} from "./storybookUtils";
 
 const meta = {
   title: "App",
@@ -39,6 +29,9 @@ const meta = {
     viewport: {
       viewports: INITIAL_VIEWPORTS,
       defaultViewport: "iphonese2",
+    },
+    msw: {
+      handlers: [nbpApiHandler],
     },
   },
 } satisfies Meta<typeof App>;
@@ -58,15 +51,14 @@ export const ValidForm: Story = {
     await fillInForm(canvas, "Car", "1", "100");
     expect(submitButton).toBeEnabled();
     await userEvent.click(submitButton);
-    expect(submitTransactionMock).toHaveBeenCalledWith(
-      {
-        category: "Transportation",
-        subcategory: "Car",
-        day: 1,
-        price: 100,
-      },
-      expect.objectContaining({})
-    );
+    expect(submitTransactionMock).toHaveBeenCalledWith({
+      category: "Transportation",
+      currency: "PLN",
+      subcategory: "Car",
+      day: 1,
+      exchangeRate: 1,
+      price: 100,
+    });
   },
 };
 
@@ -95,6 +87,7 @@ export const InvalidDay: Story = {
     expect(submitButton).toBeDisabled();
     expect(canvas.getByText("day must be less than or equal to 31")).toBeInTheDocument();
     expect(dayField).toBeInvalid();
+    expect(canvas.getByLabelText("Currency")).toBeDisabled();
   },
 };
 
@@ -122,9 +115,12 @@ export const KeyboardNavigation: Story = {
     const categoryField = canvas.getByRole("combobox", { name: "Category" });
     const dayField = canvas.getByRole("spinbutton", { name: "Day" });
     const priceField = canvas.getByRole("spinbutton", { name: "Price" });
+    const currencyField = canvas.getByRole("combobox", { name: "Currency" });
     expect(submitButton).toHaveFocus();
     await userEvent.tab({ shift: true });
     expect(priceField).toHaveFocus();
+    await userEvent.tab({ shift: true });
+    expect(currencyField).toHaveFocus();
     await userEvent.tab({ shift: true });
     expect(dayField).toHaveFocus();
     await userEvent.tab({ shift: true });
@@ -146,6 +142,89 @@ export const WithError: Story = {
         <IssuesLink />
       </ErrorMessage>
     );
+  },
+};
+
+export const ForeignCurrencyTransaction: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const categoryField = await canvas.findByRole("combobox", { name: "Category" });
+    await userEvent.click(categoryField);
+    await userEvent.click(canvas.getByRole("option", { name: "Restaurants" }));
+    const dayField = await canvas.findByRole("spinbutton", { name: "Day" });
+    await userEvent.type(dayField, "10");
+
+    const currencyDropdown = await canvas.findByRole("combobox", { name: "Currency" });
+    await userEvent.click(currencyDropdown);
+    await userEvent.click(screen.getByRole("option", { name: "EUR" }));
+
+    await canvas.findByText("1 EUR = 4.27 PLN");
+
+    const priceField = canvas.getByRole("spinbutton", { name: "Price" });
+    await userEvent.type(priceField, "20");
+
+    const submitButton = canvas.getByRole("button", { name: "Add transaction" });
+    expect(submitButton).toBeEnabled();
+    await userEvent.click(submitButton);
+
+    const expectedPLNPrice = 20 * 4.2657;
+    expect(submitTransactionMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        category: "Food",
+        subcategory: "Restaurants",
+        day: 10,
+        currency: "EUR",
+        price: expect.closeTo(expectedPLNPrice, 2),
+        exchangeRate: 4.2657,
+      })
+    );
+  },
+};
+
+export const ForeignCurrencyTransactionWithWeekendRate: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const categoryField = await canvas.findByRole("combobox", { name: "Category" });
+    await userEvent.click(categoryField);
+    await userEvent.click(canvas.getByRole("option", { name: "Restaurants" }));
+    const dayField = await canvas.findByRole("spinbutton", { name: "Day" });
+    await userEvent.type(dayField, "12");
+
+    const currencyDropdown = await canvas.findByRole("combobox", { name: "Currency" });
+    await userEvent.click(currencyDropdown);
+    await userEvent.click(screen.getByRole("option", { name: "EUR" }));
+
+    await canvas.findByText("1 EUR = 4.27 PLN (2025-01-10)");
+  },
+};
+
+export const FailedExchangeRateFetch: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const categoryField = await canvas.findByRole("combobox", { name: "Category" });
+    await userEvent.click(categoryField);
+    await userEvent.click(canvas.getByRole("option", { name: "Restaurants" }));
+    const dayField = await canvas.findByRole("spinbutton", { name: "Day" });
+    await userEvent.type(dayField, "12");
+
+    const currencyDropdown = await canvas.findByRole("combobox", { name: "Currency" });
+    await userEvent.click(currencyDropdown);
+    await userEvent.click(screen.getByRole("option", { name: "EUR" }));
+
+    await canvas.findByText("Unknown error while fetching rate, no rate applied", undefined, {
+      timeout: 5000,
+    });
+  },
+  parameters: {
+    msw: {
+      handlers: [nbpApiHandlerError],
+    },
   },
 };
 

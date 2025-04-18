@@ -32,11 +32,13 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.70.0",
     "@fluentui/react-components": "^9.60.0",
     "@fluentui/react-icons": "^2.0.100",
     "@hookform/resolvers": "^2.9.5",
+    "@tanstack/react-query": "^5.70.0",
     "i18next": "^22.0.0",
+    "msw": "^2.7.5",
+    "msw-storybook-addon": "^2.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.40.0",
@@ -105,5 +107,10 @@
       "path": "dist/*.js",
       "limit": "196 kB"
     }
-  ]
+  ],
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
 }
