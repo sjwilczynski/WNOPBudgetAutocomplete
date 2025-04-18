@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
 import type { FieldError, Resolver, ResolverOptions, ResolverResult } from "react-hook-form";
 import { useEffect } from "react";
+import { CURRENCIES, type Currency } from "./useCurrencyRate";
 
 export type FormContext = { categories: Record<string, string[]> };
 
@@ -26,6 +27,11 @@ function useYupSchema() {
       subcategory: yup.string().required(),
       day: yup.number().typeError(t("day-type-error")).required().min(1).max(31),
       price: yup.number().typeError(t("price-type-error")).required(),
+      currency: yup
+        .string()
+        .oneOf<Currency>([...CURRENCIES])
+        .required(),
+      exchangeRate: yup.number().required(),
     })
     .required();
 }
@@ -58,6 +64,10 @@ export const useFormResolver: () => Resolver<FormData, FormContext> = () => {
   };
 };
 
-export type FormData = yup.InferType<ReturnType<typeof useYupSchema>>;
+type InferredFormData = yup.InferType<ReturnType<typeof useYupSchema>>;
+
+export type FormData = Omit<InferredFormData, "currency"> & {
+  currency: Currency;
+};
 
 export const SEPARATOR = "$%^";

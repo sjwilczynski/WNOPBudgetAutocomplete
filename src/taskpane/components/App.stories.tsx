@@ -7,19 +7,27 @@ import * as React from "react";
 import { IssuesLink } from "./IssuesLink/IssuesLink";
 import { ErrorMessage } from "./ErrorMessage";
 import { useTranslation } from "react-i18next";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const submitTransactionMock = fn();
 
+const queryClient = new QueryClient();
 const excelDecorator: Decorator = (Story) => (
-  <ExcelProvider submitTransaction={submitTransactionMock} month="January">
+  <ExcelProvider submitTransaction={submitTransactionMock} month="January" year={2025}>
     <Story />
   </ExcelProvider>
+);
+
+const reactQueryDecorator: Decorator = (Story) => (
+  <QueryClientProvider client={queryClient}>
+    <Story />
+  </QueryClientProvider>
 );
 
 const meta = {
   title: "App",
   component: App,
-  decorators: [excelDecorator],
+  decorators: [excelDecorator, reactQueryDecorator],
   args: {
     categories: {
       Food: ["Groceries", "Restaurants", "Snacks"],
