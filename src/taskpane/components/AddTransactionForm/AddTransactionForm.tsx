@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Field, Input, Dropdown, Option, Spinner, Text } from "@fluentui/react-components";
+import { Field, Input, Dropdown, Option } from "@fluentui/react-components";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import "./AddTransactionForm.css";
@@ -7,8 +7,9 @@ import { Button } from "@fluentui/react-components";
 import { CalendarLtr24Regular, Money24Regular } from "@fluentui/react-icons";
 import { useFormResolver, type FormData, type FormContext } from "./formSchema";
 import { CategoriesField } from "./CategoriesField";
+import { PriceHint } from "./PriceHint";
+import { CURRENCIES, type Currency } from "./useCurrencyRate";
 import { useExcel } from "../../context/ExcelContext";
-import { useCurrencyRate, CURRENCIES, type Currency } from "./useCurrencyRate";
 
 // eslint-disable-next-line no-unused-vars
 export type FormSubmit = (data: FormData) => void;
@@ -17,23 +18,7 @@ type Props = {
   categories: Record<string, string[]>;
 };
 
-const monthNameToNumber: Record<string, string> = {
-  January: "01",
-  February: "02",
-  March: "03",
-  April: "04",
-  May: "05",
-  June: "06",
-  July: "07",
-  August: "08",
-  September: "09",
-  October: "10",
-  November: "11",
-  December: "12",
-};
-
 export const AddTransactionForm = ({ categories }: Props) => {
-  const { month, year } = useExcel();
   const resolver = useFormResolver();
   const {
     handleSubmit,
@@ -54,44 +39,8 @@ export const AddTransactionForm = ({ categories }: Props) => {
   const { t } = useTranslation();
 
   const dayValue = watch("day");
-  const currencyValue = watch("currency");
 
-  const monthNumber = month ? monthNameToNumber[month] : null;
   const isDayValid = !(getFieldState("day").invalid || !getFieldState("day").isDirty);
-  const dateForRate =
-    isDayValid && monthNumber && year
-      ? `${year}-${monthNumber}-${dayValue.toString().padStart(2, "0")}`
-      : null;
-
-  const {
-    data: fetchedExchangeRate,
-    isLoading: rateLoading,
-    isError,
-  } = useCurrencyRate(currencyValue, dateForRate);
-
-  React.useEffect(() => {
-    setValue("exchangeRate", fetchedExchangeRate ?? 1);
-  }, [currencyValue, fetchedExchangeRate, setValue]);
-
-  const getPriceHint = () => {
-    if (currencyValue === "PLN") {
-      return null;
-    }
-    if (rateLoading) {
-      return <Spinner size="tiny" />;
-    }
-    if (isError) {
-      return (
-        <Text size={200} weight="regular" style={{ color: "red" }}>
-          {t("error-fetch-rate-unknown")}
-        </Text>
-      );
-    }
-    if (fetchedExchangeRate) {
-      return `1 ${currencyValue} = ${fetchedExchangeRate.toFixed(2)} PLN`;
-    }
-    return null;
-  };
 
   const onSubmit = useSubmit();
 
@@ -160,7 +109,14 @@ export const AddTransactionForm = ({ categories }: Props) => {
             required={true}
             validationState={errors.price ? "error" : "success"}
             validationMessage={errors.price?.message}
-            hint={getPriceHint()}
+            hint={
+              <PriceHint
+                watch={watch}
+                setValue={setValue}
+                dayValue={dayValue}
+                isDayValid={isDayValid}
+              />
+            }
           >
             <Input
               placeholder={t("price-placeholder")}
