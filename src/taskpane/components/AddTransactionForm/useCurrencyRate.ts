@@ -28,7 +28,7 @@ const fetchClosestCurrencyRate = async (
   targetDate: string
 ): Promise<{ rate: number; dateMessage: string }> => {
   const endDate = targetDate;
-  const startDate = subtractDays(targetDate, 3);
+  const startDate = subtractDays(targetDate, 4);
 
   const apiUrl = `https://api.nbp.pl/api/exchangerates/rates/A/${currency.toLowerCase()}/${startDate}/${endDate}?format=json`;
 
