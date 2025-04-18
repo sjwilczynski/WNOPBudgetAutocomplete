@@ -41,14 +41,14 @@ export const PriceHint: React.FC<PriceHintProps> = ({ watch, setValue, dayValue,
       : null;
 
   const {
-    data: fetchedExchangeRate,
+    data: { rate, dateMessage } = { rate: 1, dateMessage: "" },
     isLoading: rateLoading,
     isError,
   } = useCurrencyRate(currencyValue, dateForRate);
 
   React.useEffect(() => {
-    setValue("exchangeRate", fetchedExchangeRate ?? 1);
-  }, [fetchedExchangeRate, setValue]);
+    setValue("exchangeRate", rate);
+  }, [rate, setValue]);
 
   if (currencyValue === "PLN") {
     return null;
@@ -63,11 +63,11 @@ export const PriceHint: React.FC<PriceHintProps> = ({ watch, setValue, dayValue,
       </Text>
     );
   }
-  if (fetchedExchangeRate) {
-    const decimalPoints = fetchedExchangeRate > 1 ? 2 : 3;
+  if (rate) {
+    const decimalPoints = rate > 1 ? 2 : 3;
     return (
       <Text size={200} weight="regular">
-        {`1 ${currencyValue} = ${fetchedExchangeRate.toFixed(decimalPoints)} PLN`}
+        {`1 ${currencyValue} = ${rate.toFixed(decimalPoints)} PLN ${dateMessage ? `(${dateMessage})` : ""}`}
       </Text>
     );
   }

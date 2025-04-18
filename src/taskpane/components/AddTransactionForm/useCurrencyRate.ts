@@ -4,41 +4,58 @@ export const CURRENCIES = ["PLN", "EUR", "USD", "NOK"] as const;
 
 export type Currency = (typeof CURRENCIES)[number];
 
-type NbpRateResponse = {
+type NbpRate = {
+  no: string;
+  effectiveDate: string;
+  mid: number;
+};
+
+type NbpRateRangeResponse = {
   table: string;
   currency: string;
   code: string;
-  rates: {
-    no: string;
-    effectiveDate: string;
-    mid: number;
-  }[];
+  rates: NbpRate[];
 };
 
-const fetchCurrencyRate = async (currency: string, date: string): Promise<number> => {
-  const apiUrl = `https://api.nbp.pl/api/exchangerates/rates/A/${currency.toLowerCase()}/${date}?format=json`;
+const subtractDays = (dateStr: string, days: number): string => {
+  const date = new Date(dateStr);
+  date.setUTCDate(date.getUTCDate() - days);
+  return date.toISOString().split("T")[0];
+};
+
+const fetchClosestCurrencyRate = async (
+  currency: string,
+  targetDate: string
+): Promise<{ rate: number; dateMessage: string }> => {
+  const endDate = targetDate;
+  const startDate = subtractDays(targetDate, 3);
+
+  const apiUrl = `https://api.nbp.pl/api/exchangerates/rates/A/${currency.toLowerCase()}/${startDate}/${endDate}?format=json`;
+
   const response = await fetch(apiUrl);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch rate: ${response.status}`);
   }
 
-  const data: NbpRateResponse = await response.json();
+  const data: NbpRateRangeResponse = await response.json();
 
-  if (data?.rates?.[0]?.mid) {
-    return data.rates[0].mid;
-  } else {
-    throw new Error("Invalid API response structure received from NBP.");
+  if (data?.rates && data.rates.length > 0) {
+    const closestRate = data.rates[data.rates.length - 1];
+    const message = closestRate.effectiveDate === targetDate ? "" : closestRate.effectiveDate;
+
+    return { rate: closestRate.mid, dateMessage: message };
   }
+
+  throw new Error(`No exchange rate found for ${currency} up to ${targetDate} within the NBP API`);
 };
 
-export const useCurrencyRate = (currency: Currency, date: string | null) => {
-  // The query is enabled only if currency is not PLN and date is provided
-  const enabled = currency !== "PLN" && date !== null;
+export const useCurrencyRate = (currency: Currency, targetDate: string | null) => {
+  const enabled = currency !== "PLN" && targetDate !== null;
 
-  return useQuery<number, Error>({
-    queryKey: ["currencyRate", currency, date],
-    queryFn: () => fetchCurrencyRate(currency, date!),
+  return useQuery<{ rate: number; dateMessage: string }, Error>({
+    queryKey: ["currencyRate", currency, targetDate],
+    queryFn: () => fetchClosestCurrencyRate(currency, targetDate!),
     enabled: enabled,
     staleTime: 1000 * 60 * 60 * 24,
     retry: 1,
