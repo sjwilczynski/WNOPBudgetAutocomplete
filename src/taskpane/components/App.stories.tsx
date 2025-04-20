@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { within, expect, userEvent, waitFor, screen } from "@storybook/test";
+import { within, expect, userEvent, screen } from "@storybook/test";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import App from "./App";
 import * as React from "react";
@@ -29,9 +29,6 @@ const meta = {
     viewport: {
       viewports: INITIAL_VIEWPORTS,
       defaultViewport: "iphonese2",
-    },
-    msw: {
-      handlers: [nbpApiHandler],
     },
   },
 } satisfies Meta<typeof App>;
@@ -181,6 +178,11 @@ export const ForeignCurrencyTransaction: Story = {
       })
     );
   },
+  parameters: {
+    msw: {
+      handlers: [nbpApiHandler],
+    },
+  },
 };
 
 export const ForeignCurrencyTransactionWithWeekendRate: Story = {
@@ -200,6 +202,11 @@ export const ForeignCurrencyTransactionWithWeekendRate: Story = {
 
     await canvas.findByText("1 EUR = 4.27 PLN (2025-01-10)");
   },
+  parameters: {
+    msw: {
+      handlers: [nbpApiHandler],
+    },
+  },
 };
 
 export const FailedExchangeRateFetch: Story = {
@@ -215,10 +222,10 @@ export const FailedExchangeRateFetch: Story = {
 
     const currencyDropdown = await canvas.findByRole("combobox", { name: "Currency" });
     await userEvent.click(currencyDropdown);
-    await userEvent.click(screen.getByRole("option", { name: "EUR" }));
+    await userEvent.click(screen.getByRole("option", { name: "USD" }));
 
-    await canvas.findByText("Unknown error while fetching rate, no rate applied", undefined, {
-      timeout: 5000,
+    await canvas.findAllByText("Unknown error while fetching rate, no rate applied", undefined, {
+      timeout: 3000,
     });
   },
   parameters: {
