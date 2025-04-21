@@ -39,7 +39,6 @@ export default function App({ categories }: Props) {
       <Header message={t("welcome")} />
       {categories ? (
         <>
-          <MonthLabel />
           <TabList
             selectedValue={selectedValue}
             onTabSelect={onTabSelect}
@@ -49,10 +48,13 @@ export default function App({ categories }: Props) {
             <Tab value="rates">{t("tab-rates")}</Tab>
           </TabList>
 
-          <div>
-            {selectedValue === "add-transaction" && <AddTransactionForm categories={categories} />}
-            {selectedValue === "rates" && <RatesView />}
-          </div>
+          {selectedValue === "add-transaction" && (
+            <>
+              <MonthLabel />
+              <AddTransactionForm categories={categories} />
+            </>
+          )}
+          {selectedValue === "rates" && <RatesView />}
         </>
       ) : (
         <Progress message={t("loading")} />
