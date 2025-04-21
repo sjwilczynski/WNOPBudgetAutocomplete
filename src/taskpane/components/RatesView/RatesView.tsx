@@ -15,8 +15,9 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import { DatePicker } from "@fluentui/react-datepicker-compat";
-import { useTranslation } from "react-i18next";
+import { useTranslation, type TFunction } from "react-i18next";
 import { useRatesForDateRange } from "../../currency/useRatesForDateRange";
+import { ErrorBoundary } from "react-error-boundary";
 
 const formatDateToYYYYMMDD = (date: Date): string => {
   const year = date.getFullYear();
@@ -46,18 +47,14 @@ type GridItem = {
   NOK: number;
 };
 
-export const RatesView = () => {
-  const { t } = useTranslation();
-  const styles = useStyles();
-  const today = React.useMemo(() => new Date(), []);
-  const [selectedDate, setSelectedDate] = React.useState<Date | null | undefined>(today);
-  const endDate = selectedDate ? formatDateToYYYYMMDD(selectedDate) : null;
+interface RatesGridProps {
+  endDate: string;
+  styles: ReturnType<typeof useStyles>;
+  t: TFunction<"translation", undefined>;
+}
 
-  const onSelectDate = (date: Date | null | undefined): void => {
-    setSelectedDate(date);
-  };
-
-  const { ratesByDate, isLoading, isError } = useRatesForDateRange(endDate);
+const RatesGrid: React.FC<RatesGridProps> = ({ endDate, styles, t }) => {
+  const { ratesByDate } = useRatesForDateRange(endDate);
 
   const items: GridItem[] = React.useMemo(() => {
     return Object.entries(ratesByDate)
@@ -78,14 +75,14 @@ export const RatesView = () => {
         renderCell: (item) => item.date,
       }),
       createTableColumn<GridItem>({
-        columnId: "eur",
-        renderHeaderCell: () => "EUR",
-        renderCell: (item) => item.EUR?.toFixed(2) ?? "-",
-      }),
-      createTableColumn<GridItem>({
         columnId: "usd",
         renderHeaderCell: () => "USD",
         renderCell: (item) => item.USD?.toFixed(2) ?? "-",
+      }),
+      createTableColumn<GridItem>({
+        columnId: "eur",
+        renderHeaderCell: () => "EUR",
+        renderCell: (item) => item.EUR?.toFixed(2) ?? "-",
       }),
       createTableColumn<GridItem>({
         columnId: "nok",
@@ -101,6 +98,46 @@ export const RatesView = () => {
   };
 
   return (
+    <DataGrid items={items} columns={columns} aria-label={t("rates-table-label")}>
+      <DataGridHeader>
+        <DataGridRow>
+          {(column) => (
+            <DataGridHeaderCell
+              key={column.columnId}
+              className={getColumnClassName(column.columnId)}
+            >
+              {column.renderHeaderCell()}
+            </DataGridHeaderCell>
+          )}
+        </DataGridRow>
+      </DataGridHeader>
+      <DataGridBody<GridItem>>
+        {({ item, rowId }) => (
+          <DataGridRow<GridItem> key={rowId}>
+            {(column) => (
+              <DataGridCell key={column.columnId} className={getColumnClassName(column.columnId)}>
+                {column.renderCell(item)}
+              </DataGridCell>
+            )}
+          </DataGridRow>
+        )}
+      </DataGridBody>
+    </DataGrid>
+  );
+};
+
+export const RatesView = () => {
+  const { t } = useTranslation();
+  const styles = useStyles();
+  const today = React.useMemo(() => new Date(), []);
+  const [selectedDate, setSelectedDate] = React.useState<Date | null | undefined>(today);
+  const endDate = selectedDate ? formatDateToYYYYMMDD(selectedDate) : null;
+
+  const onSelectDate = (date: Date | null | undefined): void => {
+    setSelectedDate(date);
+  };
+
+  return (
     <div className={styles.root}>
       <Field label={t("select-date")}>
         <DatePicker
@@ -111,42 +148,19 @@ export const RatesView = () => {
         />
       </Field>
 
-      {isLoading && <Spinner label={t("loading")} />}
-      {isError && (
-        <Text size={300} weight="semibold" className={styles.error}>
-          {t("rates-loading-error")}
-        </Text>
-      )}
-      {!isLoading && !isError && endDate && (
-        <DataGrid items={items} columns={columns} aria-label={t("rates-table-label")}>
-          <DataGridHeader>
-            <DataGridRow>
-              {(column) => (
-                <DataGridHeaderCell
-                  key={column.columnId}
-                  className={getColumnClassName(column.columnId)}
-                >
-                  {column.renderHeaderCell()}
-                </DataGridHeaderCell>
-              )}
-            </DataGridRow>
-          </DataGridHeader>
-          <DataGridBody<GridItem>>
-            {({ item, rowId }) => (
-              <DataGridRow<GridItem> key={rowId}>
-                {(column) => (
-                  <DataGridCell
-                    key={column.columnId}
-                    className={getColumnClassName(column.columnId)}
-                  >
-                    {column.renderCell(item)}
-                  </DataGridCell>
-                )}
-              </DataGridRow>
-            )}
-          </DataGridBody>
-        </DataGrid>
-      )}
+      <ErrorBoundary
+        fallbackRender={() => (
+          <div>
+            <Text size={300} weight="semibold" className={styles.error}>
+              {t("rates-loading-error")}
+            </Text>
+          </div>
+        )}
+      >
+        <React.Suspense fallback={<Spinner label={t("loading")} />}>
+          {endDate ? <RatesGrid endDate={endDate} styles={styles} t={t} /> : null}
+        </React.Suspense>
+      </ErrorBoundary>
     </div>
   );
 };
