@@ -261,7 +261,6 @@ export const RatesViewWithError: Story = {
     const canvas = within(canvasElement);
     await new Promise((resolve) => setTimeout(resolve, 500));
     await userEvent.click(canvas.getByRole("tab", { name: "Exchange rates" }));
-    await userEvent.click(canvas.getByRole("tab", { name: "Exchange rates" }));
     await canvas.findByRole("combobox", { name: "Select date" });
     await canvas.findByText("Failed to load rates");
   },
