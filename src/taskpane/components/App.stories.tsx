@@ -235,6 +235,14 @@ export const FailedExchangeRateFetch: Story = {
   },
 };
 
+export const RatesView: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    await userEvent.click(canvas.getByRole("tab", { name: "Rates" }));
+  },
+};
+
 const fillInForm = async (
   canvas: ReturnType<typeof within>,
   category: string,

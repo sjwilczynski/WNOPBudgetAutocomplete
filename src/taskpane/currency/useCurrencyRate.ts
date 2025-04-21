@@ -1,32 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-
-export const CURRENCIES = ["PLN", "EUR", "USD", "NOK"] as const;
-
-export type Currency = (typeof CURRENCIES)[number];
-
-type NbpRate = {
-  no: string;
-  effectiveDate: string;
-  mid: number;
-};
-
-type NbpRateRangeResponse = {
-  table: string;
-  currency: string;
-  code: string;
-  rates: NbpRate[];
-};
-
-const subtractDays = (dateStr: string, days: number): string => {
-  const date = new Date(dateStr);
-  date.setUTCDate(date.getUTCDate() - days);
-  return date.toISOString().split("T")[0];
-};
+import { subtractDays } from "./common";
+import type { Currency, NbpRateRangeResponse } from "./common";
 
 const fetchClosestCurrencyRate = async (
   currency: string,
   targetDate: string
-): Promise<{ rate: number; dateMessage: string }> => {
+): Promise<NbpRateRangeResponse> => {
   const endDate = targetDate;
   const startDate = subtractDays(targetDate, 4);
 
@@ -41,10 +20,7 @@ const fetchClosestCurrencyRate = async (
   const data: NbpRateRangeResponse = await response.json();
 
   if (data?.rates && data.rates.length > 0) {
-    const closestRate = data.rates[data.rates.length - 1];
-    const message = closestRate.effectiveDate === targetDate ? "" : closestRate.effectiveDate;
-
-    return { rate: closestRate.mid, dateMessage: message };
+    return data;
   }
 
   throw new Error(`No exchange rate found for ${currency} up to ${targetDate} within the NBP API`);
@@ -53,12 +29,19 @@ const fetchClosestCurrencyRate = async (
 export const useCurrencyRate = (currency: Currency, targetDate: string | null) => {
   const enabled = currency !== "PLN" && targetDate !== null;
 
-  return useQuery<{ rate: number; dateMessage: string }, Error>({
+  const { data, isLoading, isError } = useQuery<NbpRateRangeResponse, Error>({
     queryKey: ["currencyRate", currency, targetDate],
     queryFn: () => fetchClosestCurrencyRate(currency, targetDate!),
-    enabled: enabled,
+    enabled,
     staleTime: 1000 * 60 * 60 * 24,
     retry: 1,
     refetchOnWindowFocus: false,
   });
+
+  const closestRate = data?.rates[data?.rates.length - 1];
+  const message = closestRate?.effectiveDate === targetDate ? "" : closestRate?.effectiveDate;
+
+  const processedData = { rate: closestRate?.mid, dateMessage: message };
+
+  return { data: processedData, isLoading, isError };
 };

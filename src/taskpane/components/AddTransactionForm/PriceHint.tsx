@@ -2,7 +2,7 @@ import * as React from "react";
 import { Spinner, Text, tokens } from "@fluentui/react-components";
 import type { UseFormSetError, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useCurrencyRate } from "./useCurrencyRate";
+import { useCurrencyRate } from "../../currency/useCurrencyRate";
 import type { FormData } from "./formSchema";
 import { useExcel } from "../../context/ExcelContext";
 
@@ -54,7 +54,7 @@ export const PriceHint: React.FC<PriceHintProps> = ({
   } = useCurrencyRate(currencyValue, dateForRate);
 
   React.useEffect(() => {
-    setValue("exchangeRate", rate);
+    setValue("exchangeRate", rate ?? 1);
   }, [rate, setValue]);
 
   React.useEffect(() => {

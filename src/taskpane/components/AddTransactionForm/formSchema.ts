@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
 import type { FieldError, Resolver, ResolverOptions, ResolverResult } from "react-hook-form";
 import { useEffect } from "react";
-import { CURRENCIES, type Currency } from "./useCurrencyRate";
+import { CURRENCIES, type Currency } from "../../currency/common";
 
 export type FormContext = { categories: Record<string, string[]> };
 

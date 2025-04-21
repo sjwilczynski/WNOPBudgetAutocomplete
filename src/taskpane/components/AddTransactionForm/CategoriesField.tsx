@@ -3,7 +3,15 @@ import { type Control, Controller, type FieldError, type UseFormSetValue } from 
 import { Field, Combobox, Option, OptionGroup } from "@fluentui/react-components";
 import { useTranslation } from "react-i18next";
 import { type FormData, SEPARATOR } from "./formSchema";
-import "./CategoriesField.css";
+import { makeStyles } from "@fluentui/react-components";
+
+const useStyles = makeStyles({
+  listbox: {
+    overflow: "auto",
+    maxHeight: "180px",
+    zIndex: 2,
+  },
+});
 
 type Props = {
   categories: Record<string, string[]>;
@@ -14,7 +22,7 @@ type Props = {
 
 export const CategoriesField = ({ categories, control, error, setValue }: Props) => {
   const { t } = useTranslation();
-
+  const styles = useStyles();
   const [categoryFilter, setCategoryFilter] = React.useState("");
 
   return (
@@ -52,7 +60,7 @@ export const CategoriesField = ({ categories, control, error, setValue }: Props)
                   field.onChange(data.optionValue);
                 }
               }}
-              listbox={{ className: "category-listbox" }}
+              listbox={{ className: styles.listbox }}
               onFocus={(e) => e.currentTarget.select()}
             >
               <CategoryOptions filter={categoryFilter} categories={categories} />
@@ -66,7 +74,8 @@ export const CategoriesField = ({ categories, control, error, setValue }: Props)
 
 const CategoryOptions = React.memo(
   ({ filter, categories }: { filter: string; categories: Record<string, string[]> }) => {
-    const matches = (filter: string, text: string) => text.toLowerCase().indexOf(filter.toLowerCase()) > -1;
+    const matches = (filter: string, text: string) =>
+      text.toLowerCase().indexOf(filter.toLowerCase()) > -1;
     const macthesFilter = (subcategory: string) => matches(filter, subcategory);
     const matchingCategories = Object.entries(categories).filter(([, subcatgeories]) =>
       subcatgeories.some(macthesFilter)
