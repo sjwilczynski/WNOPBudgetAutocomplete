@@ -239,7 +239,7 @@ export const RatesView: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await new Promise((resolve) => setTimeout(resolve, 500));
-    await userEvent.click(canvas.getByRole("tab", { name: "Rates" }));
+    await userEvent.click(canvas.getByRole("tab", { name: "Exchange rates" }));
   },
 };
 
