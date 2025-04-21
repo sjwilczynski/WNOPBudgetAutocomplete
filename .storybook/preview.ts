@@ -14,6 +14,9 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    test: {
+      dangerouslyIgnoreUnhandledErrors: true,
+    },
   },
   globalTypes: { ...fluentGlobalTypes, ...i18nGlobalTypes },
   initialGlobals: {
