@@ -17,7 +17,7 @@ export type NbpRateRangeResponse = {
 
 export type NbpTableRate = {
   currency: string;
-  code: Currency;
+  code: string;
   mid: number;
 };
 
@@ -30,7 +30,7 @@ export type NbpTableSingleDateResponse = {
 
 export type RatesByDate = Record<string, Record<Currency, number>>;
 
-export const TARGET_CURRENCIES: Set<Currency> = new Set(["EUR", "USD", "NOK"]);
+export const TARGET_CURRENCIES: Set<string> = new Set(["EUR", "USD", "NOK"]);
 
 export const subtractDays = (dateStr: string, days: number): string => {
   const date = new Date(dateStr);

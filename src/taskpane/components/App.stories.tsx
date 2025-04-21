@@ -8,8 +8,10 @@ import { ErrorMessage } from "./ErrorMessage";
 import { useTranslation } from "react-i18next";
 import {
   excelDecorator,
-  nbpApiHandler,
-  nbpApiHandlerError,
+  nbpApiAllCurrenciesHandler,
+  nbpApiAllCurrenciesHandlerError,
+  nbpApiSingleHandler,
+  nbpApiSingleHandlerError,
   reactQueryDecorator,
   submitTransactionMock,
 } from "./storybookUtils";
@@ -29,6 +31,12 @@ const meta = {
     viewport: {
       viewports: INITIAL_VIEWPORTS,
       defaultViewport: "iphonese2",
+    },
+    msw: {
+      handlers: {
+        single: nbpApiSingleHandler,
+        all: nbpApiAllCurrenciesHandler,
+      },
     },
   },
 } satisfies Meta<typeof App>;
@@ -178,11 +186,6 @@ export const ForeignCurrencyTransaction: Story = {
       })
     );
   },
-  parameters: {
-    msw: {
-      handlers: [nbpApiHandler],
-    },
-  },
 };
 
 export const ForeignCurrencyTransactionWithWeekendRate: Story = {
@@ -201,11 +204,6 @@ export const ForeignCurrencyTransactionWithWeekendRate: Story = {
     await userEvent.click(screen.getByRole("option", { name: "EUR" }));
 
     await canvas.findByText("1 EUR = 4.27 PLN (2025-01-10)");
-  },
-  parameters: {
-    msw: {
-      handlers: [nbpApiHandler],
-    },
   },
 };
 
@@ -230,7 +228,9 @@ export const FailedExchangeRateFetch: Story = {
   },
   parameters: {
     msw: {
-      handlers: [nbpApiHandlerError],
+      handlers: {
+        single: nbpApiSingleHandlerError,
+      },
     },
   },
 };
@@ -240,6 +240,22 @@ export const RatesView: Story = {
     const canvas = within(canvasElement);
     await new Promise((resolve) => setTimeout(resolve, 500));
     await userEvent.click(canvas.getByRole("tab", { name: "Exchange rates" }));
+  },
+};
+
+export const RatesViewWithError: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    await userEvent.click(canvas.getByRole("tab", { name: "Exchange rates" }));
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        single: null,
+        all: nbpApiAllCurrenciesHandlerError,
+      },
+    },
   },
 };
 
