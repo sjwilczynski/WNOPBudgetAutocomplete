@@ -14,7 +14,11 @@ import {
   makeStyles,
   tokens,
 } from "@fluentui/react-components";
-import { DatePicker, type CalendarStrings, defaultDatePickerStrings } from "@fluentui/react-datepicker-compat";
+import {
+  DatePicker,
+  type CalendarStrings,
+  defaultDatePickerStrings,
+} from "@fluentui/react-datepicker-compat";
 import { useTranslation, type TFunction } from "react-i18next";
 import { useRatesForDateRange } from "../../currency/useRatesForDateRange";
 import { ErrorBoundary } from "react-error-boundary";
@@ -138,9 +142,7 @@ export const RatesView = () => {
   };
 
   const datePickerStrings = React.useMemo((): CalendarStrings => {
-    // Fetch the localized overrides
     const localizedPart = t("datePicker", { returnObjects: true }) as Partial<CalendarStrings>;
-    // Explicitly merge with defaults to ensure a complete CalendarStrings object
     return {
       ...defaultDatePickerStrings,
       ...localizedPart,
@@ -149,9 +151,7 @@ export const RatesView = () => {
 
   return (
     <div className={styles.root}>
-      <Field
-        label={t("select-date")}
-      >
+      <Field label={t("select-date")}>
         <DatePicker
           value={selectedDate}
           onSelectDate={onSelectDate}
