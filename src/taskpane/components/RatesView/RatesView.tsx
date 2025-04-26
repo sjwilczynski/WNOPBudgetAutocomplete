@@ -149,11 +149,23 @@ export const RatesView = () => {
     };
   }, [t]);
 
+  const formatDate = (date?: Date): string =>
+    date
+      ? datePickerStrings.shortDays[date.getDay()] +
+        " " +
+        date.getDate() +
+        " " +
+        datePickerStrings.shortMonths[date.getMonth()] +
+        " " +
+        date.getFullYear()
+      : "";
+
   return (
     <div className={styles.root}>
       <Field label={t("select-date")}>
         <DatePicker
           value={selectedDate}
+          formatDate={formatDate}
           onSelectDate={onSelectDate}
           minDate={new Date("2000-01-01")}
           maxDate={today}

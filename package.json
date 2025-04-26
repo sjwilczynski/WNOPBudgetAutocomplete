@@ -109,7 +109,7 @@
   "size-limit": [
     {
       "path": "dist/*.js",
-      "limit": "286 kB"
+      "limit": "287 kB"
     }
   ],
   "msw": {
