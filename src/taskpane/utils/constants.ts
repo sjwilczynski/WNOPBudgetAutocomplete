@@ -23,4 +23,4 @@ export const monthNameToNumber: Record<string, string> = {
   Październik: "10",
   Listopad: "11",
   Grudzień: "12",
-}; 
+};
