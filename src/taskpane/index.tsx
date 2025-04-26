@@ -1,7 +1,7 @@
 import App from "./components/App";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 import { getCategories } from "./excel/getCategories";
 import { initI18n } from "./i18n/i18n";
 import { ErrorMessage } from "./components/ErrorMessage";
@@ -9,12 +9,21 @@ import { IssuesLink } from "./components/IssuesLink/IssuesLink";
 import { ExcelProvider } from "./context/ExcelContext";
 import { submitTransaction } from "./excel/addTransaction";
 import { useMonth } from "./excel/useMonth";
+import { useYear } from "./excel/useYear";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 /* global Office */
 
+const queryClient = new QueryClient();
+
 const render = (component: React.ReactNode) => {
-  ReactDOM.render(
-    <FluentProvider theme={webLightTheme}>{component}</FluentProvider>,
-    document.getElementById("container")
+  const container = document.getElementById("container");
+  const root = ReactDOM.createRoot(container!);
+  root.render(
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <FluentProvider theme={webLightTheme}>{component}</FluentProvider>
+      </QueryClientProvider>
+    </React.StrictMode>
   );
 };
 
@@ -44,10 +53,11 @@ Office.onReady(async (info) => {
 
 const AppWithContext = ({ categories }: { categories: Record<string, string[]> | undefined }) => {
   const month = useMonth();
+  const year = useYear();
 
   return (
     <FluentProvider theme={webLightTheme}>
-      <ExcelProvider submitTransaction={submitTransaction} month={month}>
+      <ExcelProvider submitTransaction={submitTransaction} month={month} year={year}>
         <App categories={categories} />
       </ExcelProvider>
     </FluentProvider>

@@ -11,7 +11,7 @@ export const withI18n: Decorator = (Story, context) => {
     initI18n(language).then(() => setInitialized(true));
   }, [language]);
 
-  return initialized ? <Story /> : null;
+  return initialized ? <Story /> : <></>;
 };
 
 export const globalTypes: Preview["globalTypes"] = {

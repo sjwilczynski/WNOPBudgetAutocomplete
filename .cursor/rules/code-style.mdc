@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+- Don't add comments to code unless explicitly asked to
+- For control statements like if/switch/for always add brackets
