@@ -1,4 +1,4 @@
-import type { Decorator } from "@storybook/react/*";
+import type { Decorator, StoryContext } from "@storybook/react";
 import { http, HttpResponse } from "msw";
 import * as React from "react";
 import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
@@ -89,11 +89,15 @@ const queryClient = new QueryClient();
 
 export const submitTransactionMock = fn();
 
-export const excelDecorator: Decorator = (Story) => (
-  <ExcelProvider submitTransaction={submitTransactionMock} month="January" year={2025}>
-    <Story />
-  </ExcelProvider>
-);
+export const excelDecorator: Decorator = (Story, context: StoryContext) => {
+  const { month, year } = context.parameters.excel || { month: "January", year: 2025 };
+
+  return (
+    <ExcelProvider submitTransaction={submitTransactionMock} month={month} year={year}>
+      <Story />
+    </ExcelProvider>
+  );
+};
 
 const ReactQueryProvider = ({ children }: { children: React.ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

@@ -294,6 +294,25 @@ export const RatesViewDatePickerLocalized: Story = {
   },
 };
 
+export const NotMonthView: Story = {
+  parameters: {
+    excel: {
+      month: undefined,
+      year: 2025,
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const addTransactionTab = await canvas.findByRole("tab", { name: /Add transaction/i });
+    expect(addTransactionTab).toBeDisabled();
+
+    const ratesTab = await canvas.findByRole("tab", { name: /Exchange rates/i });
+    expect(ratesTab).toHaveAttribute("aria-selected", "true");
+  },
+};
+
 const fillInForm = async (
   canvas: ReturnType<typeof within>,
   category: string,

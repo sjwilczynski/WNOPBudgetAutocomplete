@@ -1,10 +1,15 @@
 import type { Preview } from "@storybook/react";
+import { configure } from "@storybook/test";
 import { fluentDecorator, globalTypes as fluentGlobalTypes } from "./fluentDecorator";
 import { withI18n, globalTypes as i18nGlobalTypes } from "./i18nDecorator";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import MockDate from "mockdate";
 
 initialize();
+
+configure({
+  asyncUtilTimeout: 2000,
+});
 
 const preview: Preview = {
   parameters: {

@@ -1,15 +1,21 @@
 /* global Excel, OfficeExtension */
 import { useEffect, useRef, useState } from "react";
+import { monthNameToNumber } from "../utils/constants";
 
 export const useMonth = () => {
-  const [month, setMonth] = useState<string>("");
+  const [month, setMonth] = useState<string | undefined>(undefined);
   const handlerRef = useRef<OfficeExtension.EventHandlerResult<unknown>>();
   useEffect(() => {
     Excel.run(async (context) => {
       const setMonthFromWorkbook = async () => {
         const activeSheet = context.workbook.worksheets.getActiveWorksheet().load("name");
         await context.sync();
-        setMonth(activeSheet.name);
+        const sheetName = activeSheet.name;
+        if (sheetName in monthNameToNumber) {
+          setMonth(sheetName);
+        } else {
+          setMonth(undefined);
+        }
       };
 
       setMonthFromWorkbook();
