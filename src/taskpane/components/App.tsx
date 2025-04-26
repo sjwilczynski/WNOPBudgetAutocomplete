@@ -7,6 +7,7 @@ import { Progress } from "./Progress";
 import { TabList, Tab, makeStyles, tokens } from "@fluentui/react-components";
 import type { SelectTabData, SelectTabEvent } from "@fluentui/react-components";
 import { RatesView } from "./RatesView/RatesView";
+import { useExcel } from "../context/ExcelContext";
 
 type Props = {
   categories?: Record<string, string[]>;
@@ -29,10 +30,19 @@ export default function App({ categories }: Props) {
   const { t } = useTranslation();
   const [selectedValue, setSelectedValue] = React.useState<string>("add-transaction");
   const styles = useStyles();
+  const { month } = useExcel();
+
+  const isMonthView = !!month;
 
   const onTabSelect = (_event: SelectTabEvent, data: SelectTabData) => {
     setSelectedValue(data.value as string);
   };
+
+  React.useEffect(() => {
+    if (!isMonthView && selectedValue === "add-transaction") {
+      setSelectedValue("rates");
+    }
+  }, [isMonthView, selectedValue]);
 
   return (
     <main className={styles.app}>
@@ -44,7 +54,9 @@ export default function App({ categories }: Props) {
             onTabSelect={onTabSelect}
             className={styles.tabList}
           >
-            <Tab value="add-transaction">{t("tab-add-transaction")}</Tab>
+            <Tab value="add-transaction" disabled={!isMonthView}>
+              {t("tab-add-transaction")}
+            </Tab>
             <Tab value="rates">{t("tab-rates")}</Tab>
           </TabList>
 
