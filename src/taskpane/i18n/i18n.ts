@@ -1,6 +1,7 @@
 import type { Resource } from "i18next";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import { defaultDatePickerStrings, type CalendarStrings } from "@fluentui/react-datepicker-compat";
 
 export const initI18n = (locale: string) =>
   i18n.use(initReactI18next).init({
@@ -8,6 +9,7 @@ export const initI18n = (locale: string) =>
     lng: locale,
     supportedLngs: ["en-US", "pl-PL"],
     fallbackLng: "en-US",
+    returnObjects: true,
   });
 
 const resources: Resource = {
@@ -38,6 +40,9 @@ const resources: Resource = {
       "tab-add-transaction": "Add transaction",
       "tab-rates": "Exchange rates",
       welcome: "Add new transaction",
+      datePicker: {
+        ...defaultDatePickerStrings,
+      } satisfies CalendarStrings,
     },
   },
   "pl-PL": {
@@ -67,6 +72,52 @@ const resources: Resource = {
       "tab-add-transaction": "Dodaj transakcję",
       "tab-rates": "Kursy walut",
       welcome: "Dodaj nową transakcję",
+      datePicker: {
+        days: ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"],
+        shortDays: ["N", "Pn", "Wt", "Śr", "Cz", "Pt", "So"],
+        months: [
+          "Styczeń",
+          "Luty",
+          "Marzec",
+          "Kwiecień",
+          "Maj",
+          "Czerwiec",
+          "Lipiec",
+          "Sierpień",
+          "Wrzesień",
+          "Październik",
+          "Listopad",
+          "Grudzień",
+        ],
+        shortMonths: [
+          "Sty",
+          "Lut",
+          "Mar",
+          "Kwi",
+          "Maj",
+          "Cze",
+          "Lip",
+          "Sie",
+          "Wrz",
+          "Paź",
+          "Lis",
+          "Gru",
+        ],
+        goToToday: "Dzisiaj",
+        prevMonthAriaLabel: "Poprzedni miesiąc",
+        nextMonthAriaLabel: "Następny miesiąc",
+        prevYearAriaLabel: "Poprzedni rok",
+        nextYearAriaLabel: "Następny rok",
+        prevYearRangeAriaLabel: "Poprzedni zakres lat",
+        nextYearRangeAriaLabel: "Następny zakres lat",
+        closeButtonAriaLabel: "Zamknij",
+        monthPickerHeaderAriaLabel: "{0}, wybierz aby zmienić rok",
+        yearPickerHeaderAriaLabel: "{0}, wybierz aby zmienić miesiąc",
+        weekNumberFormatString: "Tydzień numer {0}",
+        selectedDateFormatString: "Wybrana data {0}",
+        todayDateFormatString: "Dzisiejsza data {0}",
+        dayMarkedAriaLabel: "oznaczono",
+      } satisfies CalendarStrings,
     },
   },
 };

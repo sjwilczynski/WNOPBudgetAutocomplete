@@ -274,6 +274,26 @@ export const RatesViewWithError: Story = {
   },
 };
 
+export const FormLocalized: Story = {
+  globals: {
+    language: "pl-PL",
+  },
+};
+
+export const RatesViewDatePickerLocalized: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    await userEvent.click(await canvas.findByRole("tab", { name: /Kursy walut/i }));
+    const picker = await canvas.findByRole("combobox", { name: /Wybierz datę/i });
+    await userEvent.click(picker);
+    expect(await screen.findByRole("button", { name: "Dzisiaj" })).toBeInTheDocument();
+  },
+  globals: {
+    language: "pl-PL",
+  },
+};
+
 const fillInForm = async (
   canvas: ReturnType<typeof within>,
   category: string,
