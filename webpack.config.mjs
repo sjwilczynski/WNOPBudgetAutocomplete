@@ -86,9 +86,6 @@ export default async (env, options) => {
         chunks: ["taskpane", "vendor"],
       }),
     ].concat(dev ? [new ReactRefreshWebpackPlugin()] : []),
-    optimization: {
-      runtimeChunk: "single",
-    },
     devServer: {
       hot: true,
       headers: {
