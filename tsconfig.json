@@ -5,7 +5,7 @@
     "target": "es2022",
     "lib": ["es2022", "dom"],
     "esModuleInterop": true,
-    "module": "ESNext",
+    "module": "ES2022",
     "jsx": "react",
     "moduleResolution": "Bundler",
     "sourceMap": true,
@@ -20,6 +20,12 @@
     "typeRoots": ["node_modules/@types"],
     "verbatimModuleSyntax": true
   },
+  "include": [
+    "src/**/*",
+    "vite.config.ts",
+    "vitest.config.ts",
+    ".storybook/**/*"
+  ],
   "exclude": ["node_modules"],
   "compileOnSave": false,
   "buildOnSave": false,

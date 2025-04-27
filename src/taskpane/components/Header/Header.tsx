@@ -1,5 +1,5 @@
 import * as React from "react";
-import logo from "../../../../assets/logo-80.png";
+import logo from "/assets/logo-80.png";
 import { makeStyles } from "@fluentui/react-components";
 
 type Props = {
