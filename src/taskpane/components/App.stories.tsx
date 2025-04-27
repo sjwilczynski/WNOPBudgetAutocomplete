@@ -297,7 +297,7 @@ export const RatesViewDatePickerLocalized: Story = {
 export const NotMonthView: Story = {
   parameters: {
     excel: {
-      month: undefined,
+      month: "NOT_FOUND",
       year: 2025,
     },
   },

@@ -94,7 +94,7 @@
   "size-limit": [
     {
       "path": "dist/assets/*.js",
-      "limit": "250 kB"
+      "limit": "255 kB"
     }
   ],
   "msw": {

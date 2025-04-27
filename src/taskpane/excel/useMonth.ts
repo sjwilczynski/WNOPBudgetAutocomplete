@@ -2,8 +2,10 @@
 import { useEffect, useRef, useState } from "react";
 import { monthNameToNumber } from "../utils/constants";
 
-export const useMonth = () => {
-  const [month, setMonth] = useState<string | undefined>(undefined);
+export type MonthState = string | "LOADING" | "NOT_FOUND";
+
+export const useMonth = (): MonthState => {
+  const [month, setMonth] = useState<MonthState>("LOADING");
   const handlerRef = useRef<OfficeExtension.EventHandlerResult<unknown>>();
   useEffect(() => {
     Excel.run(async (context) => {
@@ -14,7 +16,7 @@ export const useMonth = () => {
         if (sheetName in monthNameToNumber) {
           setMonth(sheetName);
         } else {
-          setMonth(undefined);
+          setMonth("NOT_FOUND");
         }
       };
 
