@@ -32,22 +32,23 @@ export default function App({ categories }: Props) {
   const styles = useStyles();
   const { month } = useExcel();
 
-  const isMonthView = !!month;
+  const isMonthView = month !== "LOADING" && month !== "NOT_FOUND";
+  const isLoading = month === "LOADING";
 
   const onTabSelect = (_event: SelectTabEvent, data: SelectTabData) => {
     setSelectedValue(data.value as string);
   };
 
   React.useEffect(() => {
-    if (!isMonthView && selectedValue === "add-transaction") {
+    if (month === "NOT_FOUND" && selectedValue === "add-transaction") {
       setSelectedValue("rates");
     }
-  }, [isMonthView, selectedValue]);
+  }, [month, selectedValue]);
 
   return (
     <main className={styles.app}>
       <Header message={t("welcome")} />
-      {categories ? (
+      {categories && !isLoading ? (
         <>
           <TabList
             selectedValue={selectedValue}

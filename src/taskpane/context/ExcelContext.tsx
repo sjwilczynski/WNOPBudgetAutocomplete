@@ -1,9 +1,10 @@
 import * as React from "react";
 import type { FormSubmit } from "../components/AddTransactionForm/AddTransactionForm";
+import type { MonthState } from "../excel/useMonth";
 
 type ExcelContextType = {
   submitTransaction: FormSubmit;
-  month: string | undefined;
+  month: MonthState;
   year: number | undefined;
 };
 
@@ -12,7 +13,7 @@ const ExcelContext = React.createContext<ExcelContextType | undefined>(undefined
 type ExcelProviderProps = {
   children: React.ReactNode;
   submitTransaction: FormSubmit;
-  month: string | undefined;
+  month: MonthState;
   year: number | undefined;
 };
 
