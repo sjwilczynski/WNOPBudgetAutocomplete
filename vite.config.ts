@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import checker from "vite-plugin-checker";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import { getHttpsServerOptions } from "office-addin-dev-certs";
 import type { ServerOptions as HttpsServerOptions } from "https";
@@ -33,6 +34,9 @@ export default defineConfig(async () => {
             dest: "",
           },
         ],
+      }),
+      checker({
+        typescript: true,
       }),
     ],
     build: {

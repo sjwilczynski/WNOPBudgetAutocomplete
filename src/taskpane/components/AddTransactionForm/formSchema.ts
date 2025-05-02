@@ -1,3 +1,4 @@
+// @ts-expect-error - the package itself is not typed
 import yupLocalePL from "yup-locale-pl";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,7 +7,7 @@ import type { FieldError, Resolver, ResolverOptions, ResolverResult } from "reac
 import { useEffect } from "react";
 import { CURRENCIES, type Currency } from "../../currency/common";
 
-export type FormContext = { categories: Record<string, string[]> };
+type FormContext = { categories: Record<string, string[]> };
 
 function useYupSchema() {
   const {
@@ -64,10 +65,6 @@ export const useFormResolver: () => Resolver<FormData, FormContext> = () => {
   };
 };
 
-type InferredFormData = yup.InferType<ReturnType<typeof useYupSchema>>;
-
-export type FormData = Omit<InferredFormData, "currency"> & {
-  currency: Currency;
-};
+export type FormData = yup.InferType<ReturnType<typeof useYupSchema>>;
 
 export const SEPARATOR = "$%^";
