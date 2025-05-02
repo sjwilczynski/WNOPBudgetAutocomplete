@@ -1,3 +1,4 @@
+// @ts-expect-error - the package itself is not typed
 import yupLocalePL from "yup-locale-pl";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";

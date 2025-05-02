@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Button } from "@fluentui/react-components";
 import { CalendarLtr24Regular, Money24Regular } from "@fluentui/react-icons";
-import { useFormResolver } from "./formSchema";
+import { useFormResolver, type FormData } from "./formSchema";
 import { CategoriesField } from "./CategoriesField";
 import { PriceHint } from "./PriceHint";
 import { CURRENCIES, type Currency } from "../../currency/common";

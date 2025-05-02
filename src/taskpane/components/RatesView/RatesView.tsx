@@ -19,9 +19,10 @@ import {
   type CalendarStrings,
   defaultDatePickerStrings,
 } from "@fluentui/react-datepicker-compat";
-import { useTranslation, type TFunction } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useRatesForDateRange } from "../../currency/useRatesForDateRange";
 import { ErrorBoundary } from "react-error-boundary";
+import type { TFunction } from "i18next";
 
 const formatDateToYYYYMMDD = (date: Date): string => {
   const year = date.getFullYear();
