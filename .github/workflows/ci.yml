@@ -14,21 +14,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 20.x
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
 
       - name: Install dependencies
-        run: npm install
+        run: bun install
 
       - name: Install playwright
-        run: npx playwright install chromium-headless-shell --with-deps
+        run: bunx playwright install chromium-headless-shell --with-deps
 
       - name: Build, lint and test
-        run: npm run build && npm run lint && npm run test
+        run: bun run build && bun run lint && bun run test
 
       - name: Deploy to Azure
         uses: TravisSpomer/deploy-to-azure-storage@v1.4.0
