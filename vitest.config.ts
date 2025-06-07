@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 
 import { coverageConfigDefaults, defineConfig } from "vitest/config";
 
-import { storybookTest } from "@storybook/experimental-addon-test/vitest-plugin";
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 
 const dirname =
   typeof __dirname !== "undefined" ? __dirname : path.dirname(fileURLToPath(import.meta.url));
@@ -11,7 +11,7 @@ const dirname =
 // More info at: https://storybook.js.org/docs/writing-tests/test-addon
 export default defineConfig({
   test: {
-    workspace: [
+    projects: [
       {
         extends: true,
         plugins: [

@@ -7,7 +7,7 @@ import {
 } from "@fluentui/react-components";
 
 import { webLightTheme } from "@fluentui/react-components";
-import type { Decorator, Preview } from "@storybook/react";
+import type { Decorator, Preview } from "@storybook/react-vite";
 import * as React from "react";
 
 export const fluentDecorator: Decorator = (Story, context) => {

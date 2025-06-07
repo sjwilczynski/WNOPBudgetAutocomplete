@@ -1,5 +1,5 @@
-import type { Preview } from "@storybook/react";
-import { configure } from "@storybook/test";
+import type { Preview } from "@storybook/react-vite";
+import { configure } from "storybook/test";
 import { fluentDecorator, globalTypes as fluentGlobalTypes } from "./fluentDecorator";
 import { withI18n, globalTypes as i18nGlobalTypes } from "./i18nDecorator";
 import { initialize, mswLoader } from "msw-storybook-addon";
@@ -19,8 +19,20 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+
     test: {
       dangerouslyIgnoreUnhandledErrors: true,
+    },
+
+    a11y: {
+      test: "error",
+      options: {
+        rules: {
+          "aria-hidden-focus": {
+            enabled: false,
+          },
+        },
+      },
     },
   },
   globalTypes: { ...fluentGlobalTypes, ...i18nGlobalTypes },

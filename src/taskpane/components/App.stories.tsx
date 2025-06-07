@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { within, expect, userEvent, screen } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { within, expect, userEvent, screen } from "storybook/test";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import App from "./App";
 import * as React from "react";
