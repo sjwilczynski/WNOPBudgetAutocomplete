@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { Decorator, Preview } from "@storybook/react";
+import type { Decorator, Preview } from "@storybook/react-vite";
 import { initI18n } from "../src/taskpane/i18n/i18n";
 
 export const withI18n: Decorator = (Story, context) => {

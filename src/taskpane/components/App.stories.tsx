@@ -1,6 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { within, expect, userEvent, screen } from "@storybook/test";
-import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { within, expect, userEvent, screen } from "storybook/test";
+import {
+  INITIAL_VIEWPORTS,
+  type ViewportGlobals,
+  type ViewportParameters,
+} from "storybook/viewport";
 import App from "./App";
 import * as React from "react";
 import { IssuesLink } from "./IssuesLink/IssuesLink";
@@ -15,6 +19,7 @@ import {
   reactQueryDecorator,
   submitTransactionMock,
 } from "./storybookUtils";
+import type { MswParameters } from "msw-storybook-addon";
 
 const meta = {
   title: "App",
@@ -29,8 +34,7 @@ const meta = {
   },
   parameters: {
     viewport: {
-      viewports: INITIAL_VIEWPORTS,
-      defaultViewport: "iphonese2",
+      options: INITIAL_VIEWPORTS,
     },
     msw: {
       handlers: {
@@ -38,7 +42,10 @@ const meta = {
         all: nbpApiAllCurrenciesHandler,
       },
     },
-  },
+  } satisfies ViewportParameters & MswParameters,
+  globals: {
+    viewport: { value: "iphonese2", isRotated: false },
+  } satisfies ViewportGlobals,
 } satisfies Meta<typeof App>;
 
 export default meta;

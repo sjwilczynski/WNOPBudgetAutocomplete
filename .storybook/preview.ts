@@ -1,9 +1,11 @@
-import type { Preview } from "@storybook/react";
-import { configure } from "@storybook/test";
+import type { Preview } from "@storybook/react-vite";
+import { configure } from "storybook/test";
 import { fluentDecorator, globalTypes as fluentGlobalTypes } from "./fluentDecorator";
 import { withI18n, globalTypes as i18nGlobalTypes } from "./i18nDecorator";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import MockDate from "mockdate";
+import type { TestParameters } from "@storybook/addon-vitest";
+import type { A11yParameters } from "@storybook/addon-a11y";
 
 initialize();
 
@@ -13,16 +15,21 @@ configure({
 
 const preview: Preview = {
   parameters: {
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/i,
-      },
-    },
     test: {
       dangerouslyIgnoreUnhandledErrors: true,
     },
-  },
+
+    a11y: {
+      test: "error",
+      options: {
+        rules: {
+          "aria-hidden-focus": {
+            enabled: false,
+          },
+        },
+      },
+    },
+  } satisfies TestParameters & A11yParameters,
   globalTypes: { ...fluentGlobalTypes, ...i18nGlobalTypes },
   initialGlobals: {
     theme: "light",

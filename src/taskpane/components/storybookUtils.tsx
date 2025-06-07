@@ -1,9 +1,9 @@
-import type { Decorator, StoryContext } from "@storybook/react";
+import type { Decorator, StoryContext } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
 import * as React from "react";
 import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import { ExcelProvider } from "../context/ExcelContext";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import {
   mockRatesNOK,
   mockRatesEUR,
