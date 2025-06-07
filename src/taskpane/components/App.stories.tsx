@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { within, expect, userEvent, screen } from "storybook/test";
-import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
+import { INITIAL_VIEWPORTS } from "storybook/viewport";
 import App from "./App";
 import * as React from "react";
 import { IssuesLink } from "./IssuesLink/IssuesLink";
@@ -29,8 +29,7 @@ const meta = {
   },
   parameters: {
     viewport: {
-      viewports: INITIAL_VIEWPORTS,
-      defaultViewport: "iphonese2",
+      options: INITIAL_VIEWPORTS,
     },
     msw: {
       handlers: {
@@ -38,6 +37,9 @@ const meta = {
         all: nbpApiAllCurrenciesHandler,
       },
     },
+  },
+  globals: {
+    viewport: { value: "iphonese2", isRotated: false },
   },
 } satisfies Meta<typeof App>;
 
