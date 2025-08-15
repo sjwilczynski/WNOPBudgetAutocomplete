@@ -4,7 +4,6 @@ import { fluentDecorator, globalTypes as fluentGlobalTypes } from "./fluentDecor
 import { withI18n, globalTypes as i18nGlobalTypes } from "./i18nDecorator";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import MockDate from "mockdate";
-import type { TestParameters } from "@storybook/addon-vitest";
 import type { A11yParameters } from "@storybook/addon-a11y";
 
 initialize();
@@ -12,6 +11,17 @@ initialize();
 configure({
   asyncUtilTimeout: 2000,
 });
+
+// copied from https://github.com/storybookjs/storybook/blob/da8cf2095bfde31267c11652a5f18deb4c48e192/code/core/src/test/preview.ts#L132
+interface TestParameters {
+  test?: {
+    /** Ignore unhandled errors during test execution */
+    dangerouslyIgnoreUnhandledErrors?: boolean;
+
+    /** Whether to throw exceptions coming from the play function */
+    throwPlayFunctionExceptions?: boolean;
+  };
+}
 
 const preview: Preview = {
   parameters: {
@@ -28,8 +38,8 @@ const preview: Preview = {
           },
         },
       },
-    },
-  } satisfies TestParameters & A11yParameters,
+    } satisfies A11yParameters,
+  } satisfies TestParameters & { a11y: A11yParameters },
   globalTypes: { ...fluentGlobalTypes, ...i18nGlobalTypes },
   initialGlobals: {
     theme: "light",
